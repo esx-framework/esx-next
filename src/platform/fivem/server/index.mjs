@@ -1,5 +1,6 @@
-import ESX       from '../../../server';
-import ESXPlayer from '../../../server/player';
+import ESX         from '../../../server';
+import ESXPlayer   from '../../../server/player';
+import { Vector3 } from '@math.gl/core';
 
 let esx;
 
@@ -15,7 +16,7 @@ const eventWrapper = {
   emit      : (name, ...args)         => global.emit               (name, ...args),
   onClient  : (name, cb)              => global.onNet              (name, (...args) => cb(wrapPlayer(source), ...args)),
   offClient : (name, cb)              => global.removeEventListener(name, cb),
-  emitClient: (player, name, ...args) => global.emitNet            (name, player.get(), ...args),
+  emitClient: (player, name, ...args) => global.emitNet            (name, player ? player.get() : -1, ...args),
 };
 
 const flowControlWrapper = {
@@ -106,22 +107,26 @@ const wrapPlayer = (player) => {
     getRotation : () => data.rotation,
 
     setModel : v => {
+
       data.model = v;
+      
       global.emitNet('model.set', player, data.model);
     },
 
     setPosition : (v, update = true) => {
-      data.position = {x: v.x, y: v.y, z: v.z};
+
+      data.position = new Vector3(v.x, v.y, v.z);
 
       if (update)
-        global.emitNet('position.set', player, data.position);
+        global.emitNet('position.set', player, {x: data.position.x, y: data.position.y, z: data.position.z});
     },
 
     setRotation : (v, update = true) => {
-      data.rotation = {x: v.x, y: v.y, z: v.z};
+
+      data.rotation = new Vector3(v.x, v.y, v.z);
 
       if (update)
-        global.emitNet('rotation.set', player, data.rotation);
+        global.emitNet('rotation.set', player, {x: data.rotation.x, y: data.rotation.y, z: data.rotation.z});
     },
 
   });

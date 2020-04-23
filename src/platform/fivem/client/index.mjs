@@ -1,6 +1,6 @@
-import ESX from '../../../client';
+import ESX          from '../../../client';
+import * as natives from './natives';
 
-// Create wrappers
 const logWrapper = {
   log     : console.log,
   logError: console.error
@@ -82,19 +82,21 @@ const flowControlWrapper = {
 const nativeWrapper = new Proxy({}, {
   
   get: (obj, prop) => {
-    
+
+    if(natives[prop] !== undefined)
+      return natives[prop];
+
     const name = prop.substr(0, 1).toUpperCase() + prop.substr(1);
 
-    if(global[name] === undefined)
-      throw new Error(`[esx] native ${prop} does not exists`);
+    if(global[name] !== undefined)
+      return global[name];
 
-    return global[name];
+    throw new Error(`[esx] native ${prop} does not exists`);
 
   }
 
 });
 
-// Instanciate ESX
 const esx = new ESX({
   platform: 'fivem',
   logWrapper,
@@ -103,35 +105,42 @@ const esx = new ESX({
   nativeWrapper
 });
 
-// Forward events
+
+esx.init();
+
+// connect / spawn
 (async () => {
-  while(!esx.natives.networkIsPlayerActive(esx.natives.playerId())) {
+  
+  while(!esx.natives.networkIsPlayerActive(esx.natives.playerId()))
     await esx.delay(0);
-  }
 
   esx.emit('player.connect');
   esx.emitServer('player.connect');
 
   esx.natives.shutdownLoadingScreen();
   esx.natives.freezeEntityPosition(esx.natives.playerPedId(), false);
+  
   esx.emit('player.spawn');
+
 })();
 
-// Initialize ESX
-esx.init();
-
+// coords / rot
 (async () => {
-  let previousCoords = {x: 0.0, y: 0.0, z: 0.0};
+
+  let previousCoords = Vector3(0.0, 0.0, 0.0);
 
   while(true) {
-    const playerPed = esx.natives.playerPedId();
+
+    const playerPed    = esx.natives.playerPedId();
     const playerCoords = esx.natives.getEntityCoords(playerPed);
-    const distance = esx.natives.getDistanceBetweenCoords(playerCoords[0], playerCoords[1], playerCoords[2], previousCoords.x, previousCoords.y, previousCoords.z, true);
+    const distance     = previousCoords.distance(playerCoords);
 
     if (distance > 1) {
+     
+      previousCoords       = playerCoords;
       const playerRotation = esx.natives.getEntityRotation(playerPed, 0);
-      previousCoords = {x: playerCoords[0], y: playerCoords[1], z: playerCoords[2]};
-      esx.emitServer('player.position.update', previousCoords, {x: playerRotation[0], y: playerRotation[1], z: playerRotation[2]});
+      
+      esx.emitServer('player.position.update', previousCoords, {x: playerRotation.x, y: playerRotation.y, z: playerRotation.z});
     }
 
     await esx.delay(1000);

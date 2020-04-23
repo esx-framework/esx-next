@@ -1,7 +1,8 @@
 import * as alt from 'alt';
 
-import ESX       from '../../../server';
-import ESXPlayer from '../../../server/player';
+import ESX         from '../../../server';
+import ESXPlayer   from '../../../server/player';
+import { Vector3 } from '@math.gl/core';
 
 let esx;
 
@@ -24,12 +25,8 @@ const wrapPlayer = (player) => {
     getPosition : () => {
       
       const pos = player.pos;
-      
-      return {
-        x: pos.x,
-        y: pos.y,
-        z: pos.z
-      };
+
+      return new Vector3(pos.x, pos.y, pos.z);
 
     },
 
@@ -37,11 +34,11 @@ const wrapPlayer = (player) => {
 
       const rot = player.rot;
       
-      return {
-        x: rot.x * (180 / Math.PI),
-        y: rot.y * (180 / Math.PI),
-        z: rot.z * (180 / Math.PI)
-      };
+      return new Vector3(
+        rot.x * (180 / Math.PI),
+        rot.y * (180 / Math.PI),
+        rot.z * (180 / Math.PI)
+      );
 
     },
 

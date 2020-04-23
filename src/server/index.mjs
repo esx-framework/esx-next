@@ -87,10 +87,10 @@ export default class ESX extends EventEmitter {
   }
 
   async init() {
-    this.log('[ESX] [^2INFO^7] ESX by ESX-Org as been initialized');
+    this.log('[esx] ESX by ESX-Org as been initialized');
 
     this.on('player.connect', (player) => {
-      this.log(`[ESX] [^2INFO^7] Player "${player.name}" has connected with player id ${player.id}`);
+      this.log(`[esx] Player "${player.name}" has connected with player id ${player.id}`);
       const idx = this.players.indexOf(player);
 
       if(idx === -1)
@@ -109,7 +109,7 @@ export default class ESX extends EventEmitter {
     for(let i=0; i<ESXModules.length; i++) {
       const mod = ESXModules[i];
 
-      this.log(`[ESX] [^2INFO^7] Loading module "${mod.name}"`);
+      this.log(`[esx] Loading module "${mod.name}"`);
 
       const serverClass      = mod.server;
       const server           = new serverClass(this);
