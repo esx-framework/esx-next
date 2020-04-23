@@ -10,7 +10,8 @@ export default class ESX extends EventEmitter {
     logWrapper,
     eventWrapper,
     flowControlWrapper,
-    nativeWrapper
+    nativeWrapper,
+    Webview
   }) {
 
     super();
@@ -21,6 +22,7 @@ export default class ESX extends EventEmitter {
     this.eventWrapper       = eventWrapper;
     this.flowControlWrapper = flowControlWrapper;
     this.natives            = nativeWrapper;
+    this.webview            = new Webview(this);
 
   }
 
@@ -90,13 +92,10 @@ export default class ESX extends EventEmitter {
 
   async init() {
     return new Promise((resolve, reject) => {
-      i18next.init({
-        lng: 'enUS',
-        debug: false,
-        resources: {
-          enUS: locales.enUS
-        }
-      }, async (err, t) => {
+      i18next.init({lng: 'enUS', debug: false, resources: {
+        enUS: locales.enUS
+      }}, async (err, t) => {
+
         this.i18n = i18next;
         this.log(this.i18n.t('init'));
 
@@ -132,6 +131,7 @@ export default class ESX extends EventEmitter {
         this.emit('ready');
 
         resolve();
+
       });
     });
   }

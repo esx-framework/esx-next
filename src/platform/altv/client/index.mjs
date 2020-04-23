@@ -1,5 +1,7 @@
-import * as alt     from 'alt';
-import * as natives from 'natives';
+import * as alt         from 'alt';
+import * as natives     from 'natives';
+import * as wrapNatives from './natives';
+import Webview          from './webview';
 
 import ESX from '../../../client';
 
@@ -86,11 +88,13 @@ const nativeWrapper = new Proxy({}, {
   
   get: (obj, prop) => {
     
-    if(natives[prop] === undefined)
-      throw new Error(`[esx] native ${prop} does not exists`);
-
-    return natives[prop];
-
+    if(wrapNatives[prop] !== undefined)
+      return wrapNatives[prop];
+      
+    if(natives[prop] !== undefined)
+      return natives[prop];
+    
+    throw new Error(`[esx] native ${prop} does not exists`);
   }
 
 });
@@ -101,7 +105,8 @@ const esx = new ESX({
   logWrapper,
   eventWrapper,
   flowControlWrapper,
-  nativeWrapper
+  nativeWrapper,
+  Webview
 });
 
 // Forward events

@@ -1,7 +1,7 @@
-import ESX          from '../../../client';
-import * as natives from './natives';
-import {Vector3}    from '@math.gl/core/dist/esm';
-import {toUnsigned} from '../../../shared/utils';
+import ESX              from '../../../client';
+import * as wrapNatives from './natives';
+import { Vector3 }      from '@math.gl/core/dist/esm';
+import { toUnsigned }   from '../../../shared/utils';
 
 const logWrapper = {
   log     : console.log,
@@ -85,8 +85,8 @@ const nativeWrapper = new Proxy({}, {
 
   get: (obj, prop) => {
 
-    if(natives[prop] !== undefined)
-      return natives[prop];
+    if(wrapNatives[prop] !== undefined)
+      return wrapNatives[prop];
 
     const name = prop.substr(0, 1).toUpperCase() + prop.substr(1);
 
@@ -126,8 +126,6 @@ esx.init();
 
   startPositionSync();
 })();
-
-
 
 // coords / rot
 const startPositionSync = async () => {

@@ -31,8 +31,12 @@ export default[
       copy({
         targets: [
           {
-            src : path.join(__dirname, 'resource/**/*')                 .replace(/\\/g, '/'),
+            src : path.join(__dirname, 'resource/*')                    .replace(/\\/g, '/'),
             dest: path.join(__dirname, '../../../dist/' + RESOURCE_NAME).replace(/\\/g, '/')
+          },
+          {
+            src : path.join(__dirname, '../../html/main/*')                       .replace(/\\/g, '/'),
+            dest: path.join(__dirname, '../../../dist/' + RESOURCE_NAME + '/html').replace(/\\/g, '/')
           }
         ],
       })
