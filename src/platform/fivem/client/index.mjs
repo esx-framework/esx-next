@@ -2,6 +2,7 @@ import ESX              from '../../../client';
 import * as wrapNatives from './natives';
 import { Vector3 }      from '@math.gl/core/dist/esm';
 import { toUnsigned }   from '../../../shared/utils';
+import Webview          from './webview';
 
 const logWrapper = {
   log     : console.log,
@@ -104,7 +105,8 @@ const esx = new ESX({
   logWrapper,
   eventWrapper,
   flowControlWrapper,
-  nativeWrapper
+  nativeWrapper,
+  Webview
 });
 
 

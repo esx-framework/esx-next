@@ -14,7 +14,7 @@
       if(window.alt !== undefined)
         alt.emit('webview.ready')
       else
-        fetch('http://' + GetCurrentResourceName() + '/webview.ready', {method: 'post', body: '{}'});
+        fetch('http://esx_fivem/webview.ready', {method: 'post', body: '{}'});
 
     }
 
@@ -113,7 +113,7 @@
 
       } else {
 
-        fetch('http://' + GetCurrentResourceName() + '/frame.message', {
+        fetch('http://esx_fivem/frame.message', {
           method: 'post',
           body  : JSON.stringify({name, msg})
         });

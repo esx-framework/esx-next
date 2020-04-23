@@ -1,4 +1,4 @@
-import { Vector3 } from '@math.gl/core';
+import { Vector3 } from '@math.gl/core/dist/esm';
 
 export function getEntityCoords(entity) {
   return new Vector3(...global.GetEntityCoords(entity));

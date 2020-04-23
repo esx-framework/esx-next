@@ -53,7 +53,7 @@ export default[
       sourcemap: true,
     },
 
-    external: ['alt'],
+    external: [],
 
     plugins: [
       resolve(), // tells Rollup how to find date-fns in node_modules
