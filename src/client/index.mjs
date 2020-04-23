@@ -1,5 +1,7 @@
 import EventEmitter from 'eventemitter3';
 import ESXModules   from '../modules';
+import i18next      from 'i18next';
+import * as locales  from '../shared/locales';
 
 export default class ESX extends EventEmitter {
 
@@ -35,7 +37,7 @@ export default class ESX extends EventEmitter {
     return this.eventWrapper.on(name, (...args) => {
       this.emit('')
     });
-    
+
   }
 
   $off(name, cb) {
@@ -87,45 +89,51 @@ export default class ESX extends EventEmitter {
   }
 
   async init() {
+    return new Promise((resolve, reject) => {
+      i18next.init({
+        lng: 'enUS',
+        debug: false,
+        resources: {
+          enUS: locales.enUS
+        }
+      }, async (err, t) => {
+        this.i18n = i18next;
+        this.log(this.i18n.t('init'));
 
-    this.log('[esx] init client');
+        this.on('player.spawn', () => this.emitServer('player.spawn'));
 
-    this.on('player.spawn', () => this.emitServer('player.spawn'));
+        this.onServer('model.set', async (model) => {
+          if(this.platform === 'fivem') {
+            this.natives.requestModel(model);
+            await this.waitFor(() => this.natives.hasModelLoaded(model));
+            this.natives.setPlayerModel(this.natives.playerId(), model);
+          }
 
-    this.onServer('model.set', async (model) => {
-      
-      if(this.platform === 'fivem') {
-        this.natives.requestModel(model);
-        await this.waitFor(() => this.natives.hasModelLoaded(model));
-        this.natives.setPlayerModel(this.natives.playerId(), model);
-      }
+          this.natives.setPedDefaultComponentVariation(this.natives.playerPedId());
+        });
 
-      this.natives.setPedDefaultComponentVariation(this.natives.playerPedId());
+        this.onServer('position.set', (position) => {
+          if(this.platform === 'fivem') {
+            this.natives.requestCollisionAtCoord(position.x, position.y, position.z);
+            this.natives.setEntityCoordsNoOffset(this.natives.playerPedId(), position.x, position.y, position.z)
+          }
+        });
 
+        for(let i=0; i<ESXModules.length; i++) {
+          const mod = ESXModules[i]
+          this.log('[esx] load ' + mod.name);
+
+          const clientClass      = mod.client;
+          const client           = new clientClass(this);
+          this.modules[mod.name] = await client.init(this);
+        }
+
+        this.emit('ready:before');
+        this.emit('ready');
+
+        resolve();
+      });
     });
-
-    this.onServer('position.set', (position) => {
-      
-      if(this.platform === 'fivem') {
-        this.natives.requestCollisionAtCoord(position.x, position.y, position.z);
-        this.natives.setEntityCoordsNoOffset(this.natives.playerPedId(), position.x, position.y, position.z)
-      }
-
-    });
-    
-    for(let i=0; i<ESXModules.length; i++) {
-      
-      const mod = ESXModules[i]
-      this.log('[esx] load ' + mod.name);
-      
-      const clientClass      = mod.server;
-      const client           = new clientClass(this);
-      this.modules[mod.name] = await client.init(this);
-
-    }
-
-    this.emit('ready:before');
-    this.emit('ready');
   }
 
 };

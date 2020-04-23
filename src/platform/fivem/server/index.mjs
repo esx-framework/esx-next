@@ -106,11 +106,11 @@ const wrapPlayer = (player) => {
     getPosition : () => data.position,
     getRotation : () => data.rotation,
 
-    setModel : v => {
+    setModel : (newModel, update = true) => {
+      data.model = newModel;
 
-      data.model = v;
-      
-      global.emitNet('model.set', player, data.model);
+      if (update)
+        global.emitNet('model.set', player, data.model);
     },
 
     setPosition : (v, update = true) => {
@@ -154,6 +154,11 @@ esx.onClient('player.connect', (player) => {
 esx.onClient('player.position.update', (player, position, rotation) => {
   player.wrapper.setPosition(position, false);
   player.wrapper.setRotation(rotation, false);
+});
+
+esx.onClient('player.spawn:before', (player, data) => {
+  player.wrapper.setModel(data.model, false);
+  esx.emit('player.spawn', player);
 });
 
 // Initialize ESX

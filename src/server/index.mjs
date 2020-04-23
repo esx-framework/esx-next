@@ -1,5 +1,7 @@
 import EventEmitter from 'eventemitter3';
 import ESXModules   from '../modules';
+import i18next      from 'i18next';
+import * as locales  from '../shared/locales';
 
 export default class ESX extends EventEmitter {
 
@@ -86,42 +88,52 @@ export default class ESX extends EventEmitter {
     return this.flowControlWrapper.waitFor(check, timeout, delay);
   }
 
-  async init() {
-    this.log('[esx] ESX by ESX-Org as been initialized');
+  init() {
+    return new Promise((resolve, reject) => {
+      i18next.init({
+        lng: 'enUS',
+        debug: false,
+        resources: {
+          enUS: locales.enUS
+        }
+      }, async (err, t) => {
+        this.i18n = i18next;
+        this.log(i18next.t('init'));
 
-    this.on('player.connect', (player) => {
-      this.log(`[esx] Player "${player.name}" has connected with player id ${player.id}`);
-      const idx = this.players.indexOf(player);
+        this.on('player.connect', (player) => {
+          this.log(`[esx] Player "${player.name}" has connected with player id ${player.id}`);
+          const idx = this.players.indexOf(player);
 
-      if(idx === -1)
-        this.players.push(player);
+          if(idx === -1)
+            this.players.push(player);
+        });
+
+        this.on('player.disconnect', (player) => {
+          const idx = this.players.indexOf(player);
+
+          if(idx !== -1)
+            this.players.slice(idx, 1);
+        });
+
+        for(let i=0; i<ESXModules.length; i++) {
+          const mod = ESXModules[i];
+
+          this.log(`[esx] Loading module "${mod.name}"`);
+
+          const serverClass      = mod.server;
+          const server           = new serverClass(this);
+          this.modules[mod.name] = await server.init(this);
+        }
+
+        if(this.platform === 'fivem')
+          await this.delay(1000);  // Wait for players to 'register'
+
+        this.emit('ready:before');
+        this.emit('ready');
+
+        resolve();
+      });
     });
-
-    this.on('player.disconnect', (player) => {
-
-      const idx = this.players.indexOf(player);
-
-      if(idx !== -1)
-        this.players.slice(idx, 1);
-  
-    });
-
-    for(let i=0; i<ESXModules.length; i++) {
-      const mod = ESXModules[i];
-
-      this.log(`[esx] Loading module "${mod.name}"`);
-
-      const serverClass      = mod.server;
-      const server           = new serverClass(this);
-      this.modules[mod.name] = await server.init(this);
-    }
-
-    if(this.platform === 'fivem')
-      await this.delay(1000);  // Wait for players to 'register'
-
-    this.emit('ready:before');
-    this.emit('ready');
-
   }
 
 };

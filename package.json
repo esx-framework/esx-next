@@ -32,6 +32,7 @@
     "camo": "^0.12.3",
     "eventemitter3": "^4.0.0",
     "i18n": "^0.9.0",
+    "i18next": "^19.4.3",
     "mongodb": "^3.5.6",
     "rollup": "^2.7.2",
     "rollup-plugin-copy": "^3.3.0",

@@ -1,5 +1,7 @@
 import ESX          from '../../../client';
 import * as natives from './natives';
+import {Vector3}    from '@math.gl/core/dist/esm';
+import {toUnsigned} from '../../../shared/utils';
 
 const logWrapper = {
   log     : console.log,
@@ -20,7 +22,7 @@ const flowControlWrapper = {
   clearTimeout : global.clearTimeout,
   setInterval  : global.setInterval,
   clearInterval: global.clearInterval,
-  
+
   delay : (timeout) => {
     return new Promise((resolve, reject) => {
       global.setTimeout(resolve, timeout);
@@ -30,57 +32,57 @@ const flowControlWrapper = {
   promisify: function(start, ended, check = () => true, run = null, delay = 100) {
 
     return function(...args) {
-  
+
       return new Promise((resolve, reject) => {
-  
+
         start.apply(this, args);
-  
+
         const interval = global.setInterval(() => {
-  
+
           if(ended.apply(this, args)) {
             global.clearInterval(interval);
             const success = check.apply(this, args);
             resolve(success);
             return;
           }
-  
+
           if(run !== null)
             run.apply(this, args);
-  
+
         }, delay);
-  
+
       });
-  
+
     }
-  
+
   },
 
   waitFor: function(check, timeout = -1, delay = 100) {
 
     return new Promise((resolve, reject) => {
-  
+
       const start = +new Date;
-  
+
       const interval = global.setInterval(() => {
-  
+
         const now     = +new Date;
         const success = check();
-  
+
         if(success || (timeout !== -1 && (now - start >= timeout))) {
           global.clearInterval(interval);
           resolve(success);
         }
-  
+
       }, delay);
-  
+
     });
-  
+
   }
 
 };
 
 const nativeWrapper = new Proxy({}, {
-  
+
   get: (obj, prop) => {
 
     if(natives[prop] !== undefined)
@@ -110,7 +112,7 @@ esx.init();
 
 // connect / spawn
 (async () => {
-  
+
   while(!esx.natives.networkIsPlayerActive(esx.natives.playerId()))
     await esx.delay(0);
 
@@ -119,31 +121,31 @@ esx.init();
 
   esx.natives.shutdownLoadingScreen();
   esx.natives.freezeEntityPosition(esx.natives.playerPedId(), false);
-  
-  esx.emit('player.spawn');
 
+  esx.emitServer('player.spawn:before', {model: toUnsigned(esx.natives.getEntityModel(esx.natives.playerPedId()))});
+
+  startPositionSync();
 })();
 
-// coords / rot
-(async () => {
 
-  let previousCoords = Vector3(0.0, 0.0, 0.0);
+
+// coords / rot
+const startPositionSync = async () => {
+  let previousCoords = new Vector3(0.0, 0.0, 0.0);
 
   while(true) {
-
     const playerPed    = esx.natives.playerPedId();
     const playerCoords = esx.natives.getEntityCoords(playerPed);
     const distance     = previousCoords.distance(playerCoords);
 
     if (distance > 1) {
-     
+
       previousCoords       = playerCoords;
       const playerRotation = esx.natives.getEntityRotation(playerPed, 0);
-      
+
       esx.emitServer('player.position.update', previousCoords, {x: playerRotation.x, y: playerRotation.y, z: playerRotation.z});
     }
 
     await esx.delay(1000);
   }
-
-})();
+}

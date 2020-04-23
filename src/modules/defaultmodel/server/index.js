@@ -10,11 +10,7 @@ export default class DefaultModel {
 
     return new Promise((resolve, reject) => {
 
-      esx.on('ready', () => {
-        esx.players.forEach(e => e.model = config.model);
-      });
-
-      esx.onClient('player.spawn', (player) => {
+      esx.on('player.spawn', (player) => {
         player.model = config.model;
       });
 

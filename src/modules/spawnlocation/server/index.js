@@ -10,11 +10,7 @@ export default class SpawnLocation {
 
     return new Promise((resolve, reject) => {
 
-      esx.on('ready', () => {
-        esx.players.forEach(e => e.position = config.location);
-      });
-
-      esx.onClient('player.spawn', (player) => {
+      esx.on('player.spawn', (player) => {
         player.position = config.location;
       });
 

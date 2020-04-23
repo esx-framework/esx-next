@@ -1,6 +1,6 @@
 import config from '../config.json';
 
-export default class SpawnLocation {
+export default class testing {
 
   constructor(esx) {
 

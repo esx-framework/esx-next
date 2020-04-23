@@ -9,12 +9,13 @@ export default class ESXPlayer {
   get rotation() { return this.wrapper.getRotation(); }
   get heading()  { return this.wrapper.getHeading();    }
 
-  set model(v) {
+  set model(newModel) {
+    if(typeof newModel === 'string')
+    newModel = joaat(newModel);
 
-    if(typeof v === 'string')
-      v = joaat(v);
-
-    this.wrapper.setModel(v);
+    this.esx.log(newModel, this.model);
+    if (newModel != this.model)
+      this.wrapper.setModel(newModel);
   }
   
   set position(v) { this.wrapper.setPosition(v); }
