@@ -33,51 +33,51 @@ const flowControlWrapper = {
   promisify: function(start, ended, check = () => true, run = null, delay = 100) {
 
     return function(...args) {
-  
+
       return new Promise((resolve, reject) => {
-  
+
         start.apply(this, args);
-  
+
         const interval = global.setInterval(() => {
-  
+
           if(ended.apply(this, args)) {
             global.clearInterval(interval);
             const success = check.apply(this, args);
             resolve(success);
             return;
           }
-  
+
           if(run !== null)
             run.apply(this, args);
-  
+
         }, delay);
-  
+
       });
-  
+
     }
-  
+
   },
 
   waitFor: function(check, timeout = -1, delay = 100) {
 
     return new Promise((resolve, reject) => {
-  
+
       const start = +new Date;
-  
+
       const interval = alt.setInterval(() => {
-  
+
         const now     = +new Date;
         const success = check();
-  
+
         if(success || (timeout !== -1 && (now - start >= timeout))) {
           global.clearInterval(interval);
           resolve(success);
         }
-  
+
       }, delay);
-  
+
     });
-  
+
   }
 
 };
@@ -110,14 +110,18 @@ const wrapPlayer = (player) => {
       global.emitNet('model.set', player, data.model);
     },
 
-    setPosition : v => {
+    setPosition : (v, update = true) => {
       data.position = {x: v.x, y: v.y, z: v.z};
-      global.emitNet('position.set', player, data.position);
+
+      if (update)
+        global.emitNet('position.set', player, data.position);
     },
 
-    setRotation : v => {
+    setRotation : (v, update = true) => {
       data.rotation = {x: v.x, y: v.y, z: v.z};
-      global.emitNet('rotation.set', player, data.rotation);
+
+      if (update)
+        global.emitNet('rotation.set', player, data.rotation);
     },
 
   });
@@ -140,6 +144,11 @@ esx = new ESX({
 
 esx.onClient('player.connect', (player) => {
   esx.emit('player.connect', player);
+});
+
+esx.onClient('player.position.update', (player, position, rotation) => {
+  player.wrapper.setPosition(position, false);
+  player.wrapper.setRotation(rotation, false);
 });
 
 // Initialize ESX

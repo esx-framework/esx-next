@@ -22,8 +22,6 @@ export default[
       sourcemap: true,
     },
 
-    globals: ['on', 'onNet', 'emit', 'emitNet'],
-
     plugins: [
       resolve(), // tells Rollup how to find date-fns in node_modules
       nodePolyfills(),

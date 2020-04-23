@@ -104,22 +104,36 @@ const esx = new ESX({
 });
 
 // Forward events
-global.on('playerSpawned', () => {
+(async () => {
+  while(!esx.natives.networkIsPlayerActive(esx.natives.playerId())) {
+    await esx.delay(0);
+  }
+
+  esx.emit('player.connect');
+  esx.emitServer('player.connect');
+
+  esx.natives.shutdownLoadingScreen();
+  esx.natives.freezeEntityPosition(esx.natives.playerPedId(), false);
   esx.emit('player.spawn');
-});
+})();
 
 // Initialize ESX
 esx.init();
 
-esx.emit('player.connect');
-esx.emitServer('player.connect');
-
 (async () => {
+  let previousCoords = {x: 0.0, y: 0.0, z: 0.0};
 
   while(true) {
+    const playerPed = esx.natives.playerPedId();
+    const playerCoords = esx.natives.getEntityCoords(playerPed);
+    const distance = esx.natives.getDistanceBetweenCoords(playerCoords[0], playerCoords[1], playerCoords[2], previousCoords.x, previousCoords.y, previousCoords.z, true);
 
+    if (distance > 1) {
+      const playerRotation = esx.natives.getEntityRotation(playerPed, 0);
+      previousCoords = {x: playerCoords[0], y: playerCoords[1], z: playerCoords[2]};
+      esx.emitServer('player.position.update', previousCoords, {x: playerRotation[0], y: playerRotation[1], z: playerRotation[2]});
+    }
 
-    
     await esx.delay(1000);
   }
 

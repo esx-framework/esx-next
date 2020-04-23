@@ -87,18 +87,14 @@ export default class ESX extends EventEmitter {
   }
 
   async init() {
-
-    this.log('[esx] init server');
+    this.log('[ESX] [^2INFO^7] ESX by ESX-Org as been initialized');
 
     this.on('player.connect', (player) => {
-
-      this.log('[esx] player connected : ' + player.name);
-
+      this.log(`[ESX] [^2INFO^7] Player "${player.name}" has connected with player id ${player.id}`);
       const idx = this.players.indexOf(player);
 
       if(idx === -1)
         this.players.push(player);
-
     });
 
     this.on('player.disconnect', (player) => {
@@ -111,19 +107,17 @@ export default class ESX extends EventEmitter {
     });
 
     for(let i=0; i<ESXModules.length; i++) {
-      
       const mod = ESXModules[i];
 
-      this.log('[esx] load ' + mod.name);
+      this.log(`[ESX] [^2INFO^7] Loading module "${mod.name}"`);
 
       const serverClass      = mod.server;
       const server           = new serverClass(this);
       this.modules[mod.name] = await server.init(this);
-
     }
 
     if(this.platform === 'fivem')
-      await this.delay(5000);  // Wait for players to 'register'
+      await this.delay(1000);  // Wait for players to 'register'
 
     this.emit('ready:before');
     this.emit('ready');
