@@ -11,13 +11,30 @@
         alt.on('window.message', msg => this.onMessage(msg));
         
         window.addEventListener('message', e => {
-
+          
           for(let k in this.frames) {
             if(e.source === this.frames[k].iframe.contentWindow) {
               this.onFrameMessage(k, e.data);
               break;
             }
           }
+
+        });
+
+      } else {
+        
+        window.addEventListener('message', e => {
+
+          const msg = e.data;
+
+          for(let k in this.frames) {
+            if(e.source === this.frames[k].iframe.contentWindow) {
+              this.onFrameMessage(k, e.data);
+              return;
+            }
+          }
+
+          this.onMessage(msg)
 
         });
 

@@ -13,7 +13,7 @@ class WebviewFrame extends EventEmitter {
     this.url       = url;
     this.visible   = visible;
     this.destroyed = false;
-
+    
     this.parent.altWebview.emit('window.message', {action: 'create_frame', name, url, visible});
 
   }
