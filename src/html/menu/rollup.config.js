@@ -1,10 +1,14 @@
-import svelte from 'rollup-plugin-svelte';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
+import path          from 'path';
+import svelte        from 'rollup-plugin-svelte';
+import resolve       from '@rollup/plugin-node-resolve';
+import commonjs      from '@rollup/plugin-commonjs';
+import livereload    from 'rollup-plugin-livereload';
+import { terser }    from 'rollup-plugin-terser';
+import copy          from 'rollup-plugin-copy';
 
 const production = !process.env.ROLLUP_WATCH;
+
+const RESOURCE_NAMES = ['esx.altv', 'esx.fivem'];
 
 export default {
 	input: 'src/main.js',
@@ -46,7 +50,14 @@ export default {
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
-		production && terser()
+		production && terser(),
+
+		copy({
+			targets: RESOURCE_NAMES.map(RESOURCE_NAME => (				{
+				src : path.join(__dirname, 'public/*')                                     .replace(/\\/g, '/'),
+				dest: path.join(__dirname, '../../../dist/' + RESOURCE_NAME + '/html/menu').replace(/\\/g, '/')
+			})),
+		})
 	],
 	watch: {
 		clearScreen: false

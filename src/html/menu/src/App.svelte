@@ -1,25 +1,92 @@
 <script>
 
-	export let float = 'left';
+	import { onMount, beforeUpdate } from 'svelte';
 
-	export let title = 'Menu title';
+	export let float = 'left|top';
 
-	export let items = [
-		{label: 'Fufu c\'est ma bro', type: 'slider'},
-		{label: 'Fuck that shit',     type: 'check'},
-		{label: 'Fuck that shit',     type: 'text'},
-		{label: 'Lorem ipsum'},
-		{label: 'Submit', type: 'button'},
-	];
+	export let title = 'Untitled ESX Menu';
+
+	export let items  = [];
+	export let _items = [];
+
+	window.addEventListener('message', e => {
+
+		const msg = e.data;
+	
+		switch(msg.action) {
+
+			case 'set' : {
+				
+				float = msg.data.float || 'left|top';
+				title = msg.data.title || 'Untitled ESX Menu';
+				items = msg.data.items || [];
+				
+				break;
+			}
+
+			case 'set_item' : {
+
+				items[msg.index][msg.prop] = msg.val;
+				items = [...items];
+
+				break;
+			}
+
+			default: break;
+		}
+
+	});
+
+	onMount(() => {
+		window.parent.postMessage({action: 'ready'}, '*');
+	});
+
+	beforeUpdate(() => {
+
+		_items.length = 0;
+
+    for(let i=0; i<items.length; i++) {
+
+      ((i) => {
+
+        _items[i] = new Proxy(items[i], {
+
+          get: (obj, prop) => {
+            return obj[prop];
+          },
+
+          set: (obj, prop, val) => {
+            obj[prop] = val;
+            window.parent.postMessage({action: 'item.change', index: i, prop, val}, '*');
+            return true;
+          },
+
+          has: (obj, prop) => {
+            return obj[prop] !== undefined;
+          },
+
+          ownKeys: (obj) => {
+            return Object.keys(obj);
+          }
+
+        });
+
+      })(i);
+
+		}
+
+		_items = [..._items];
+
+	});
 
 </script>
 
-<main class="float-{float}">
+<main class="{float.split('|').map(e => 'float-' + e).join(' ')}">
 	<main-wrap>
 
 		<item class="title">{title}</item>
 
-		{#each items as item, i}
+		{#each _items as item, i}
 			
 			{#if item.type === undefined || item.type === 'default' || item.type === 'button'}
 				<item class="{item.type === 'button' ? 'button' : ''}">{item.label}</item>
@@ -59,13 +126,16 @@
 		padding: 15px 10px;
 		font-size: 1.1em;
 		user-select: none;
+		flex-direction: column;
+		border-radius: 10px;
 	}
 
 	main.float-left > main-wrap {
-		flex-direction: column;
-		top: 50%;
-		transform: translate(0, -50%);
-		border-radius: 0 10px 10px 0;
+		left: 10px;
+	}
+
+	main.float-top > main-wrap {
+		top: 10px;
 	}
 
 	item {

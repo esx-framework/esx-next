@@ -7,6 +7,7 @@ class WebviewFrame extends EventEmitter {
 
     super();
 
+    this.esx       = parent.esx;
     this.parent    = parent;
     this.name      = name;
     this.url       = url;
@@ -51,6 +52,10 @@ class WebviewFrame extends EventEmitter {
     alt.toggleGameControls(false);
   }
 
+  postMessage(msg) {
+    this.parent.emitFrameMessage(this.name, msg);
+  }
+
 }
 
 export default class Webview extends EventEmitter {
@@ -67,6 +72,11 @@ export default class Webview extends EventEmitter {
 
     this.altWebview.on('webview.ready', () => this._ready = true);
 
+    this.altWebview.on('frame.message', (json) => {
+      const {name, msg} = JSON.parse(json);
+      this.frames[name].emit('message', msg);
+    });
+
   }
 
   createFrame(name, url, visible = true) {
@@ -75,6 +85,15 @@ export default class Webview extends EventEmitter {
     this.frames[name] = frame;
     
     return frame;
+  }
+
+  createLocalFrame(name, path, visible = true) {
+
+    const frame       = new WebviewFrame(this, name, 'http://resource/html/' + path, visible);
+    this.frames[name] = frame;
+    
+    return frame;
+
   }
 
   unfocus() {
@@ -90,6 +109,10 @@ export default class Webview extends EventEmitter {
 
   ready() {
     return this.esx.waitFor(() => this._ready);
+  }
+
+  emitFrameMessage(name, msg) {
+    this.altWebview.emit('window.message', {target: name, data: msg});
   }
 
 }

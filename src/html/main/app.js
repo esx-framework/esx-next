@@ -6,10 +6,22 @@
 
       this.frames = {};
 
-      if(window.alt !== undefined)
+      if(window.alt !== undefined) {
+
         alt.on('window.message', msg => this.onMessage(msg));
-      else
-        window.addEventListener('message', e => this.onMessage(e.data));
+        
+        window.addEventListener('message', e => {
+
+          for(let k in this.frames) {
+            if(e.source === this.frames[k].iframe.contentWindow) {
+              this.onFrameMessage(k, e.data);
+              break;
+            }
+          }
+
+        });
+
+      }
 
       if(window.alt !== undefined)
         alt.emit('webview.ready')
@@ -28,7 +40,6 @@
       iframe.src        = url;
       this.frames[name] = {frame, iframe};
       
-      this.frames[name].iframe.addEventListener('message', e => this.onFrameMessage(name, e.data));
       this.frames[name].frame.style.pointerEvents = 'none';
 
       document.querySelector('#frames').appendChild(frame);
@@ -106,8 +117,8 @@
     onFrameMessage(name, msg) {
 
       if(window.alt !== undefined) {
-
-        alt.emit('frame.message', msg);
+        
+        alt.emit('frame.message', JSON.stringify({name, msg}));
 
       } else {
 

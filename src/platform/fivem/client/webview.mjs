@@ -73,6 +73,15 @@ export default class Webview extends EventEmitter {
     return frame;
   }
 
+  createLocalFrame(name, path, visible = true) {
+
+    const frame       = new WebviewFrame(this, name, 'nui://esx.fivem/html/' + path, visible);
+    this.frames[name] = frame;
+    
+    return frame;
+
+  }
+
   unfocus() {
 
     global.SetNuiFocus(false, false);
