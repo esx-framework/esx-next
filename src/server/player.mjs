@@ -13,7 +13,6 @@ export default class ESXPlayer {
     if(typeof newModel === 'string')
       newModel = joaat(newModel);
 
-    this.esx.log(newModel, this.model);
     if (newModel != this.model)
       this.wrapper.setModel(newModel);
   }
