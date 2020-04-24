@@ -9,7 +9,7 @@ An cross-platform RPG framework for altv and FiveM written in JavaScript. It is 
 
 ## License
 
-The ESX project is licensed under our own license, as it's most appropriate. The license is also available in [LICENSE.md](https://github.com/ESX-Org/ESX/blob/master/LICENSE.txt).
+The ESX project is licensed under our own license, as it's most appropriate. The license is also available in [LICENSE.md](https://github.com/ESX-Org/ESX/blob/master/LICENSE.md).
 
 ### Owners
 
