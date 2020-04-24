@@ -33,7 +33,7 @@
 			{/if}
 
 			{#if item.type === 'check'}
-				<item class="check" on:click={e => {item.value = !item.value; items = [...items]}} >
+				<item class="check" on:click={e => {item.value = !item.value}} >
 					{item.label} <input type="checkbox" bind:checked={item.value}/>
 				</item>
 			{/if}
