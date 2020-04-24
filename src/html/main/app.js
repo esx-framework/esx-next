@@ -14,7 +14,7 @@
       if(window.alt !== undefined)
         alt.emit('webview.ready')
       else
-        fetch('http://esx_fivem/webview.ready', {method: 'post', body: '{}'});
+        fetch('http://esx.fivem/webview.ready', {method: 'post', body: '{}'});
 
     }
 
@@ -68,8 +68,6 @@
     }
   
     onMessage(msg) {
-      
-      console.log(JSON.stringify(msg));
 
       if(msg.target) {
         
@@ -113,7 +111,7 @@
 
       } else {
 
-        fetch('http://esx_fivem/frame.message', {
+        fetch('http://esx.fivem/frame.message', {
           method: 'post',
           body  : JSON.stringify({name, msg})
         });
