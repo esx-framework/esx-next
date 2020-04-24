@@ -33,8 +33,8 @@
 			{/if}
 
 			{#if item.type === 'check'}
-				<item class="check">
-					{item.label} <input type="checkbox" bind:value={item.value}/>
+				<item class="check" on:click={e => {item.value = !item.value; items = [...items]}} >
+					{item.label} <input type="checkbox" bind:checked={item.value}/>
 				</item>
 			{/if}
 
@@ -58,6 +58,7 @@
 		background-color: rgba(0, 0, 0, 0.8);
 		padding: 15px 10px;
 		font-size: 1.1em;
+		user-select: none;
 	}
 
 	main.float-left > main-wrap {
