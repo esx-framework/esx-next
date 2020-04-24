@@ -134,7 +134,7 @@
     font-weight: bold;
     font-size: 1.75em;
     text-align: center;
-    margin-top: -5px;
+    margin-top: -4px;
     color: rgba(255, 255, 255, 0.79);
 	}
 
