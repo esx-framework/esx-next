@@ -97,6 +97,7 @@
 
 	item.title:hover {
 		background-color: unset;
+		cursor: default;
 	}
 
 	item.button {
