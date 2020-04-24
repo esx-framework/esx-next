@@ -164,4 +164,3 @@ esx.onClient('player.spawn:before', (player, data) => {
 // Initialize ESX
 esx.init();
 
-

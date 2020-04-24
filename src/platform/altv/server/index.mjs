@@ -119,7 +119,7 @@ esx.on('ready:before', () => {
   alt.Player.all.forEach(player => esx.emit('player.connect', wrapPlayer(player)));
 });
 
-alt.onClient('player.spawn', (player) => esx.emit('player.spawn', player));
+esx.onClient('player.spawn', (player) => esx.emit('player.spawn', player));
 
 // Initialize ESX
 esx.init();

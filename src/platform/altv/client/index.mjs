@@ -115,5 +115,8 @@ alt.on('connectionComplete', () => esx.emit('player.connected'));
 // Initialize ESX
 esx.init();
 
-esx.emit('player.spawn');
-esx.emitServer('player.spawn');
+esx.on('ready', () => {
+  esx.emit('player.spawn');
+  esx.emitServer('player.spawn');
+});
+
