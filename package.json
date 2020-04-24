@@ -41,6 +41,6 @@
     "rollup-plugin-terser": "^5.3.0"
   },
   "resolutions": {
-    "bluebird": "https://github.com/takiguru/bluebird"
+    "bluebird": "https://github.com/ESX-Org/bluebird"
   }
 }
