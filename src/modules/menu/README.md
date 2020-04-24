@@ -1,4 +1,4 @@
-```
+```js
 const menu = esx.modules.menu.create('test', {
   title: 'Test menu',
   items: [
