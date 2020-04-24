@@ -39,5 +39,8 @@
     "rollup-plugin-node-externals": "^2.1.5",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "rollup-plugin-terser": "^5.3.0"
+  },
+  "resolutions": {
+    "bluebird": "https://github.com/takiguru/bluebird"
   }
 }

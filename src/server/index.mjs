@@ -118,7 +118,7 @@ export default class ESX extends EventEmitter {
         for(let i=0; i<ESXModules.length; i++) {
           const mod = ESXModules[i];
 
-          this.log(`[esx] Loading module "${mod.name}"`);
+          this.log(`[esx] Loading module => ${mod.name}`);
 
           const serverClass      = mod.default;
           const server           = new serverClass(this);

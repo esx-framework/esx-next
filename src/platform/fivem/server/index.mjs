@@ -1,6 +1,6 @@
 import ESX         from '../../../server';
 import ESXPlayer   from '../../../server/player';
-import Vector3     from '@math.gl/core/dist/esm';
+import { Vector3 } from '@math.gl/core/dist/esm';
 
 let esx;
 
