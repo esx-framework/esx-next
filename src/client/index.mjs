@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3';
-import ESXModules   from '../modules';
+import ESXModules   from '../modules/index.client';
 import i18next      from 'i18next';
 import * as locales  from '../shared/locales';
 
@@ -122,7 +122,7 @@ export default class ESX extends EventEmitter {
           const mod = ESXModules[i]
           this.log('[esx] load ' + mod.name);
 
-          const clientClass      = mod.client;
+          const clientClass      = mod.default;
           const client           = new clientClass(this);
           this.modules[mod.name] = await client.init(this);
         }

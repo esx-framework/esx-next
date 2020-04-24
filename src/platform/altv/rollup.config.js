@@ -5,6 +5,7 @@ import json          from '@rollup/plugin-json';
 import {terser}      from 'rollup-plugin-terser'
 import nodePolyfills from 'rollup-plugin-node-polyfills';
 import copy          from 'rollup-plugin-copy';
+import externals     from 'rollup-plugin-node-externals'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -58,11 +59,22 @@ export default[
     external: ['alt'],
 
     plugins: [
+      externals({
+        packagePath: path.join(__dirname, '../../../package.json'),
+        exclude: ['@math.gl/core']
+      }),
       resolve(), // tells Rollup how to find date-fns in node_modules
-      nodePolyfills(),
-      commonjs(),
       json(),
-      production && terser()
+      commonjs(),
+      production && terser(),
+      copy({
+        targets: [
+          {
+            src : path.join(__dirname, '../../../package.json').replace(/\\/g, '/'),
+            dest: path.join(__dirname, '../../../dist/' + RESOURCE_NAME).replace(/\\/g, '/')
+          }
+        ]
+      }),
     ]
 
   }

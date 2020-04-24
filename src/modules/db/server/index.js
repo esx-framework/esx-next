@@ -1,6 +1,9 @@
-import config from '../config.json';
+import config   from '../config.json';
+import mongoose from 'mongoose'
 
-export default class MenuManager {
+export const name = 'db';
+
+export default class DB {
 
   constructor(esx) {
 

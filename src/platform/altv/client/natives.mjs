@@ -1,5 +1,5 @@
 import * as natives from 'natives';
-import { Vector3 } from '@math.gl/core/dist/esm';
+import { Vector3 } from '@math.gl/core';
 
 export function getEntityCoords(entity) {
   const {x, y, z} = natives.getEntityCoords(entity);

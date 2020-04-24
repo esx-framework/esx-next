@@ -1,5 +1,7 @@
 import config from '../config.json';
 
+export const name = 'defaultmodel';
+
 export default class DefaultModel {
 
   constructor(esx) {

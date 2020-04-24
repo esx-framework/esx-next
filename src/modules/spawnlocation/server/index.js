@@ -1,5 +1,7 @@
 import config from '../config.json';
 
+export const name = 'spawnlocation';
+
 export default class SpawnLocation {
 
   constructor(esx) {

@@ -1,5 +1,7 @@
 import EventEmitter from 'eventemitter3';
 
+export const name = 'menu';
+
 class Menu extends EventEmitter {
 
   constructor(esx, name, data, focus = true) {
