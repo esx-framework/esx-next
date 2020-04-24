@@ -79,6 +79,10 @@
 
 	});
 
+	const onItemClick = (item, index) => {
+		window.parent.postMessage({action: 'item.click', index}, '*');
+	}
+
 </script>
 
 <main class="{float.split('|').map(e => 'float-' + e).join(' ')}">
@@ -89,24 +93,24 @@
 		{#each _items as item, i}
 			
 			{#if item.type === undefined || item.type === 'default' || item.type === 'button'}
-				<item class="{item.type === 'button' ? 'button' : ''}">{item.label}</item>
+				<item class="{item.type === 'button' ? 'button' : ''}" on:click={e => onItemClick(item, i)}>{item.label}</item>
 			{/if}
 
 			{#if item.type === 'slider'}
-				<item class="slider">
+				<item class="slider" on:click={e => onItemClick(item, i)}>
 					<div>{item.label}</div>
-					<div><input type="range" bind:value={item.value}/></div>
+					<div><input type="range" bind:value={item.value}></div>
 				</item>
 			{/if}
 
 			{#if item.type === 'check'}
-				<item class="check" on:click={e => {item.value = !item.value}} >
+				<item class="check" on:click={e => {onItemClick(item, i); item.value = !item.value}} >
 					{item.label} <input type="checkbox" bind:checked={item.value}/>
 				</item>
 			{/if}
 
 			{#if item.type === 'text'}
-				<item class="text">
+				<item class="text" on:click={e => onItemClick(item, i)}>
 					<div>{item.label}</div>
 					<div><input type="text" bind:value={item.value} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/></div>
 				</item>
@@ -134,8 +138,16 @@
 		left: 10px;
 	}
 
+	main.float-right > main-wrap {
+		right: 10px;
+	}
+
 	main.float-top > main-wrap {
 		top: 10px;
+	}
+
+	main.float-botttom > main-wrap {
+		bottom: 10px;
 	}
 
 	item {

@@ -58,6 +58,12 @@ class Menu extends EventEmitter {
 
         case 'item.change' : {
           this.emit('internal:item.change', msg.prop, msg.val, msg.index);
+          break;
+        }
+
+        case 'item.click' : {
+          this.emit('internal:item.click', msg.index);
+          break;
         }
 
         default: break;
@@ -92,6 +98,10 @@ class Menu extends EventEmitter {
 
     });
     
+    this.on('internal:item.click', (index) => {
+      this.emit('item.click', this.items[index], index);
+    });
+
   }
 
   focus() {
