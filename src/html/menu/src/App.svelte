@@ -2,6 +2,8 @@
 
 	export let float = 'left';
 
+	export let title = 'Menu title';
+
 	export let items = [
 		{label: 'Fufu c\'est ma bro', type: 'slider'},
 		{label: 'Fuck that shit',     type: 'check'},
@@ -14,6 +16,9 @@
 
 <main class="float-{float}">
 	<main-wrap>
+
+		<item class="title">{title}</item>
+
 		{#each items as item, i}
 			
 			{#if item.type === undefined || item.type === 'default' || item.type === 'button'}
@@ -80,6 +85,18 @@
 
 	item:hover {
 		background-color: rgba(255, 255, 255, 0.07);
+	}
+
+	item.title {
+    text-align: center;
+    border-bottom: 1px solid rgba(109, 109, 109, 0.25);
+    border-radius: 0;
+    padding-bottom: 30px;
+    margin-bottom: 20px;
+	}
+
+	item.title:hover {
+		background-color: unset;
 	}
 
 	item.button {
