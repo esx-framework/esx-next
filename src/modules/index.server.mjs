@@ -1,15 +1,17 @@
-import * as defaultmodel  from './defaultmodel/server';
-import * as spawnlocation from './spawnlocation/server';
-import * as db            from './db/server';
-import * as testing       from './testing/server';
+import * as DB              from './db/server';
+import * as Defaultmodel    from './defaultmodel/server';
+import * as Spawnlocation   from './spawnlocation/server';
+import * as CharacterEditor from './charactereditor/server';
+import * as Testing         from './testing/server';
 
 /* RP */
-import * as rpBase from './[rp]/base/server';
+import * as RPBase from './[rp]/base/server';
 
 export default [
-  db,
-  defaultmodel,
-  spawnlocation,
-  rpBase,
-  testing,
+  DB,
+  Defaultmodel,
+  Spawnlocation,
+  CharacterEditor,
+  RPBase,
+  Testing,
 ];

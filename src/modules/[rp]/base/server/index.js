@@ -71,12 +71,24 @@ export default class testing {
 
       }
 
+      ESXPlayer.prototype.save = function() {
+
+        this.rpUser.position;
+
+        return this.rpUser.save();
+      }
+
       /* Events */
 
       esx.on('player.connect', async (player) => {
         esx.log(`[esx:rp] init player ${player.name}`);
         await player.init();
         esx.emit('rp.player.init', player);
+      });
+
+      esx.on('player.disconnect', async (player) => {
+        esx.log(`[esx:rp] save player ${player.name}`);
+        await player.save();
       });
 
       resolve(this);

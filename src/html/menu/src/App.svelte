@@ -99,7 +99,7 @@
 			{#if item.type === 'slider'}
 				<item class="slider" on:click={e => onItemClick(item, i)}>
 					<div>{item.label}</div>
-					<div><input type="range" bind:value={item.value}></div>
+					<div><input type="range" bind:value={item.value} min={item.min ? item.min : 0} max={item.max ? item.max : 100}></div>
 				</item>
 			{/if}
 

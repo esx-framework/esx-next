@@ -1,7 +1,9 @@
-import * as menu    from './menu/client';
-import * as testing from './testing/client';
+import * as Menu            from './menu/client';
+import * as CharacterEditor from './charactereditor/client';
+import * as Testing         from './testing/client';
 
 export default [
-  menu,
-  testing,
+  Menu,
+  CharacterEditor,
+  Testing,
 ];

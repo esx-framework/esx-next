@@ -67,16 +67,16 @@ export default class ESX extends EventEmitter {
     return this.flowControlWrapper.setTimeout(cb, ms);
   }
 
-  clearTimeout(cb, ms) {
-    return this.flowControlWrapper.clearTimeout(cb, ms);
+  clearTimeout(cb) {
+    return this.flowControlWrapper.clearTimeout(cb);
   }
 
   setInterval(cb, ms) {
     return this.flowControlWrapper.setInterval(cb, ms);
   }
 
-  clearInterval(cb, ms) {
-    return this.flowControlWrapper.clearInterval(cb, ms);
+  clearInterval(cb) {
+    return this.flowControlWrapper.clearInterval(cb);
   }
 
   delay(timeout) {
@@ -113,6 +113,8 @@ export default class ESX extends EventEmitter {
 
           this.natives.setPedDefaultComponentVariation(this.natives.playerPedId());
         
+          this.natives.setModelAsNoLongerNeeded(model);
+
         });
 
         this.onServer('position.set', (position) => {
