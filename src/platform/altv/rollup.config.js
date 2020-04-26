@@ -23,7 +23,7 @@ export default[
       sourcemap: true,
     },
 
-    external: ['alt', 'natives'].concat(external),
+    external: ['alt', 'natives'],
 
     plugins: [
       resolve(), // tells Rollup how to find date-fns in node_modules

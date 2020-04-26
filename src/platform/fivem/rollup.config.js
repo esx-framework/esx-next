@@ -14,7 +14,6 @@ const external      = ['fs', 'path'].concat(Object.keys(pkg.dependencies));
 export default[
 
   {
-
     input: path.join(__dirname, 'client/index.mjs'),
     
     output: {
@@ -22,6 +21,8 @@ export default[
       format: 'cjs',
       sourcemap: true,
     },
+
+    external: [],
 
     plugins: [
       resolve(), // tells Rollup how to find date-fns in node_modules
