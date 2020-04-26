@@ -29,3 +29,7 @@ export function toSigned(value, nbit = 32) {
 export function toUnsigned(value) {
   return Math.floor(value >>> 0);
 }
+
+export function nameClass(name, cls) {
+  return ({[name] : class extends cls {}})[name];
+}

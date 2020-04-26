@@ -10,8 +10,8 @@ export default class testing {
 
   init(esx) {
 
+    return new Promise(async (resolve, reject) => {
 
-    return new Promise((resolve, reject) => {
       resolve(this);
     });
 
