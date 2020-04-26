@@ -9,6 +9,7 @@ export default class CharacterEditor {
 
     this.pedModelHashes     = config.pedModels.map(e => joaat(e));
     this.modelChangeTimeout = null;
+    this.cam                = null;
 
   }
   
