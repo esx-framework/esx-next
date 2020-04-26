@@ -183,6 +183,7 @@ esx.onClient('player.position.update', (player, position, rotation) => {
 esx.onClient('player.spawn:before', (player, data) => {
   player.wrapper.setModel(data.model, false);
   esx.emit('player.spawn', player);
+  player.emit('player.spawn');
 });
 
 // Initialize ESX

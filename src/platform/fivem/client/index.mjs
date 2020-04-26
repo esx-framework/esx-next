@@ -1,6 +1,6 @@
 import ESX              from '../../../client';
 import * as wrapNatives from './natives';
-import { Vector3 }      from '@math.gl/core/dist/esm';
+import { Vector3, exactEquals }      from '@math.gl/core/dist/esm';
 import { toUnsigned }   from '../../../shared/utils';
 import Webview          from './webview';
 
@@ -113,7 +113,7 @@ const esx = new ESX({
 esx.init();
 
 // connect / spawn
-(async () => {
+esx.on('ready', async () => {
 
   while(!esx.natives.networkIsPlayerActive(esx.natives.playerId()))
     await esx.delay(0);
@@ -127,7 +127,10 @@ esx.init();
   esx.emitServer('player.spawn:before', {model: toUnsigned(esx.natives.getEntityModel(esx.natives.playerPedId()))});
 
   startPositionSync();
-})();
+  
+});
+
+esx.onServer('player.spawn', () => esx.emit('player.spawn'));
 
 // coords / rot
 const startPositionSync = async () => {
