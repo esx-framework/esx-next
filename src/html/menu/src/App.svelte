@@ -79,8 +79,16 @@
 
 	});
 
-	const onItemClick = (item, index) => {
+	const onItemClick = (e, item, index) => {
 		window.parent.postMessage({action: 'item.click', index}, '*');
+	}
+
+	const onSliderWheel = (e, item, index) => {
+
+		if((e.deltaY > 0) && (item.value > item.min))
+			item.value--;
+		else if((e.deltaY < 0) && (item.value < item.max))
+			item.value++;
 	}
 
 </script>
@@ -92,28 +100,32 @@
 
 		{#each _items as item, i}
 			
-			{#if item.type === undefined || item.type === 'default' || item.type === 'button'}
-				<item class="{item.type === 'button' ? 'button' : ''}" on:click={e => onItemClick(item, i)}>{item.label}</item>
-			{/if}
+			{#if item.visible}
 
-			{#if item.type === 'slider'}
-				<item class="slider" on:click={e => onItemClick(item, i)}>
-					<div>{item.label}</div>
-					<div><input type="range" bind:value={item.value} min={item.min ? item.min : 0} max={item.max ? item.max : 100}></div>
-				</item>
-			{/if}
+				{#if item.type === undefined || item.type === 'default' || item.type === 'button'}
+					<item class="{item.type === 'button' ? 'button' : ''}" on:click={e => onItemClick(e, item, i)}>{item.label}</item>
+				{/if}
 
-			{#if item.type === 'check'}
-				<item class="check" on:click={e => {onItemClick(item, i); item.value = !item.value}} >
-					{item.label} <input type="checkbox" bind:checked={item.value}/>
-				</item>
-			{/if}
+				{#if item.type === 'slider'}
+					<item class="slider" on:click={e => onItemClick(item, i)} on:wheel={e => onSliderWheel(e, item, i)}>
+						<div>{item.label}</div>
+						<div><input type="range" bind:value={item.value} min={item.min} max={item.max}></div>
+					</item>
+				{/if}
 
-			{#if item.type === 'text'}
-				<item class="text" on:click={e => onItemClick(item, i)}>
-					<div>{item.label}</div>
-					<div><input type="text" bind:value={item.value} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/></div>
-				</item>
+				{#if item.type === 'check'}
+					<item class="check" on:click={e => {onItemClick(item, i); item.value = !item.value}} >
+						{item.label} <input type="checkbox" bind:checked={item.value}/>
+					</item>
+				{/if}
+
+				{#if item.type === 'text'}
+					<item class="text" on:click={e => onItemClick(item, i)}>
+						<div>{item.label}</div>
+						<div><input type="text" bind:value={item.value} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/></div>
+					</item>
+				{/if}
+
 			{/if}
 
 		{/each}
@@ -132,6 +144,7 @@
 		user-select: none;
 		flex-direction: column;
 		border-radius: 10px;
+		min-width: 280px;  
 	}
 
 	main.float-left > main-wrap {

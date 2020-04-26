@@ -16,8 +16,7 @@ const wrapPlayer = (player) => {
 
   const wrapped = new ESXPlayer(esx, {
 
-    get: () => player,
-
+    get         : () => player,
     getId       : () => player.id,
     getName     : () => player.name,
     getModel    : () => player.model,

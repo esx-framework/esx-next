@@ -91,6 +91,7 @@ const wrapPlayer = (player) => {
     return player2wrapper.get(player);
 
   const data = {
+    self    : null,
     model   : null,
     position: null,
     rotation: null
@@ -98,8 +99,7 @@ const wrapPlayer = (player) => {
 
   const wrapped = new ESXPlayer(esx, {
 
-    get: () => player,
-
+    get         : () => player,
     getId       : () => player,
     getName     : () => global.GetPlayerName(player),
     getModel    : () => data.model,
@@ -107,26 +107,27 @@ const wrapPlayer = (player) => {
     getRotation : () => data.rotation,
 
     setModel : (newModel, update = true) => {
+
       data.model = newModel;
 
-      if (update)
-        esx.emitClient(this, 'model.set', data.model);
+      if(update)
+        esx.emitClient(player2wrapper[wrapped], 'model.set', data.model);
     },
 
     setPosition : (v, update = true) => {
 
       data.position = new Vector3(v.x, v.y, v.z);
 
-      if (update)
-      esx.emitClient(this, 'position.set', {x: data.position.x, y: data.position.y, z: data.position.z});
+      if(update)
+        esx.emitClient(player2wrapper[wrapped], 'position.set', {x: data.position.x, y: data.position.y, z: data.position.z});
     },
 
     setRotation : (v, update = true) => {
 
       data.rotation = new Vector3(v.x, v.y, v.z);
 
-      if (update)
-      esx.emitClient(this, 'rotation.set', {x: data.rotation.x, y: data.rotation.y, z: data.rotation.z});
+      if(update)
+        esx.emitClient(player2wrapper[wrapped], 'rotation.set', {x: data.rotation.x, y: data.rotation.y, z: data.rotation.z});
     },
 
   });

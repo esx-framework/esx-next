@@ -2,6 +2,8 @@ import EventEmitter from 'eventemitter3';
 
 export const name = 'menu';
 
+const menus = [];
+
 class Menu extends EventEmitter {
 
   constructor(esx, name, data, focus = true) {
@@ -20,6 +22,21 @@ class Menu extends EventEmitter {
     for(let i=0; i<_items.length; i++) {
 
       ((i) => {
+
+        _items[i].visible = _items[i].visible == undefined ? true : _items[i].visible;
+
+        switch(this.items.type) {
+
+          case 'slider' : {
+            
+            _items[i].min = _items[i].min == undefined ? 0   : _items[i].min;
+            _items[i].max = _items[i].max == undefined ? 100 : _items[i].max;
+            
+            break;
+          }
+
+          default: break;
+        }
 
         this.items[i] = new Proxy(_items[i], {
 
@@ -104,10 +121,24 @@ class Menu extends EventEmitter {
       this.emit('item.click', this.items[index], index);
     });
 
+    menus.push(this);
   }
 
   focus() {
     this.frame.focus(true);
+  }
+
+  destroy() {
+    
+    this.frame.destroy();
+
+    const idx = menus.indexOf(this);
+
+    if(idx !== -1)
+      menus.splice(idx, 1);
+
+    if(menus.length === 0)
+      this.frame.parent.unfocus();
   }
 
 } 

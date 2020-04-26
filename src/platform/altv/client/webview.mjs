@@ -45,7 +45,7 @@ class WebviewFrame extends EventEmitter {
     this.parent.altWebview.focus();
 
     if(cursor) {
-      this.parent.altWebview.cursorState++;
+      this.parent.cursorState++;
       alt.showCursor(true);
     }
 
@@ -98,10 +98,12 @@ export default class Webview extends EventEmitter {
 
   unfocus() {
 
-    altWebView.unfocus();
+    this.altWebview.unfocus();
 
-    while(this.cursorState > 0)
+    while(this.cursorState > 0) {
+      this.cursorState--;
       alt.showCursor(false);
+    }
 
     alt.toggleGameControls(true);
 
