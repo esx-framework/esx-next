@@ -2,6 +2,7 @@ import * as alt         from 'alt';
 import * as natives     from 'natives';
 import * as wrapNatives from './natives';
 import Webview          from './webview';
+import './extend';
 
 import ESX from '../../../client';
 

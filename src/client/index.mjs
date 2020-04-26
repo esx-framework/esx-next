@@ -1,8 +1,11 @@
-import config       from '../config.json';
-import EventEmitter from 'eventemitter3';
-import ESXModules   from '../modules/index.client';
-import i18next      from 'i18next';
-import * as locales from '../shared/locales';
+import config                from '../config.json';
+import EventEmitter          from 'eventemitter3';
+import ESXModules            from '../modules/index.client';
+import i18next               from 'i18next';
+import * as locales          from '../shared/locales';
+import { joaat, toUnsigned } from '../shared/utils';
+
+const FREEMODE_MODELS = ['mp_m_freemode_01', 'mp_f_freemode_01'].map(e => toUnsigned(joaat(e)));
 
 export default class ESX extends EventEmitter {
 
@@ -110,10 +113,15 @@ export default class ESX extends EventEmitter {
             await this.waitFor(() => this.natives.hasModelLoaded(model));
             this.natives.setPlayerModel(this.natives.playerId(), model);
           }
+          
+          await this.waitFor(() => toUnsigned(this.natives.getEntityModel(this.natives.playerPedId())) === model);
 
           this.natives.setPedDefaultComponentVariation(this.natives.playerPedId());
         
           this.natives.setModelAsNoLongerNeeded(model);
+
+          if(FREEMODE_MODELS.indexOf(model) !== -1)
+            this.natives.setPedHeadBlendData(this.natives.playerPedId(), 0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0, false);
 
         });
 

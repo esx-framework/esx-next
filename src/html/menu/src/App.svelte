@@ -107,20 +107,20 @@
 				{/if}
 
 				{#if item.type === 'slider'}
-					<item class="slider" on:click={e => onItemClick(item, i)} on:wheel={e => onSliderWheel(e, item, i)}>
+					<item class="slider" on:click={e => onItemClick(e, item, i)} on:wheel={e => onSliderWheel(e, item, i)}>
 						<div>{item.label}</div>
 						<div><input type="range" bind:value={item.value} min={item.min} max={item.max}></div>
 					</item>
 				{/if}
 
 				{#if item.type === 'check'}
-					<item class="check" on:click={e => {onItemClick(item, i); item.value = !item.value}} >
+					<item class="check" on:click={e => {onItemClick(e, item, i); item.value = !item.value}} >
 						{item.label} <input type="checkbox" bind:checked={item.value}/>
 					</item>
 				{/if}
 
 				{#if item.type === 'text'}
-					<item class="text" on:click={e => onItemClick(item, i)}>
+					<item class="text" on:click={e => onItemClick(e, item, i)}>
 						<div>{item.label}</div>
 						<div><input type="text" bind:value={item.value} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/></div>
 					</item>
@@ -168,7 +168,7 @@
 		border-radius: 10px;
 		cursor: pointer;
 		color: rgba(255, 255, 255, 0.6);
-		text-align: left;
+		text-align: center;
 	}
 
 	item input:focus {

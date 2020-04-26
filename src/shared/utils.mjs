@@ -1,4 +1,3 @@
-
 export function joaat(key) {
 
   const keyLowered = key.toLowerCase();

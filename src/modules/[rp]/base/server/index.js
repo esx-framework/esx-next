@@ -72,9 +72,6 @@ export default class testing {
       }
 
       ESXPlayer.prototype.save = function() {
-
-        this.rpUser.position;
-
         return this.rpUser.save();
       }
 
