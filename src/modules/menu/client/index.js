@@ -139,6 +139,8 @@ class Menu extends EventEmitter {
 
     if(menus.length === 0)
       this.frame.parent.unfocus();
+    else
+      menus[menus.length - 1].focus();
   }
 
 } 

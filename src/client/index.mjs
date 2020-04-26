@@ -116,6 +116,8 @@ export default class ESX extends EventEmitter {
           
           await this.waitFor(() => toUnsigned(this.natives.getEntityModel(this.natives.playerPedId())) === model);
 
+          this.log('foo');
+
           this.natives.setPedDefaultComponentVariation(this.natives.playerPedId());
         
           this.natives.setModelAsNoLongerNeeded(model);

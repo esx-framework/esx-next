@@ -111,7 +111,7 @@ const wrapPlayer = (player) => {
       data.model = newModel;
 
       if(update)
-        esx.emitClient(player2wrapper[wrapped], 'model.set', data.model);
+        esx.emitClient(wrapped, 'model.set', data.model);
     },
 
     setPosition : (v, update = true) => {
@@ -119,7 +119,7 @@ const wrapPlayer = (player) => {
       data.position = new Vector3(v.x, v.y, v.z);
 
       if(update)
-        esx.emitClient(player2wrapper[wrapped], 'position.set', {x: data.position.x, y: data.position.y, z: data.position.z});
+        esx.emitClient(wrapped, 'position.set', {x: data.position.x, y: data.position.y, z: data.position.z});
     },
 
     setRotation : (v, update = true) => {
@@ -127,7 +127,7 @@ const wrapPlayer = (player) => {
       data.rotation = new Vector3(v.x, v.y, v.z);
 
       if(update)
-        esx.emitClient(player2wrapper[wrapped], 'rotation.set', {x: data.rotation.x, y: data.rotation.y, z: data.rotation.z});
+        esx.emitClient(wrapped, 'rotation.set', {x: data.rotation.x, y: data.rotation.y, z: data.rotation.z});
     },
 
   });

@@ -43,9 +43,14 @@ const wrapPlayer = (player) => {
 
     getHeading : () => player.rotation.z * 180 / Math.PI,
 
-    setModel : v => player.model = v,
+    setModel : (v, update) => {
+      
+      player.model = v;
+      
+      esx.emitClient(wrapped, 'model.set', v);
+    },
     
-    setPosition : v => {
+    setPosition : (v, update) => {
 
       player.pos = {
         x: v.x,
@@ -55,7 +60,7 @@ const wrapPlayer = (player) => {
 
     },
 
-    setRotation : v => {
+    setRotation : (v, update) => {
 
       player.rot = {
         x: v.x * (Math.PI / 180),
@@ -65,7 +70,7 @@ const wrapPlayer = (player) => {
 
     },
 
-    setHeading  : v => {
+    setHeading  : (v, update) => {
       
       player.rot = {
         x: player.rot.x,
