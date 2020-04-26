@@ -1,7 +1,8 @@
+import config       from '../config.json';
 import EventEmitter from 'eventemitter3';
 import ESXModules   from '../modules/index.client';
 import i18next      from 'i18next';
-import * as locales  from '../shared/locales';
+import * as locales from '../shared/locales';
 
 export default class ESX extends EventEmitter {
 
@@ -91,17 +92,19 @@ export default class ESX extends EventEmitter {
   }
 
   async init() {
+    
     return new Promise((resolve, reject) => {
-      i18next.init({lng: 'enUS', debug: false, resources: {
-        enUS: locales.enUS
-      }}, async (err, t) => {
+      
+      i18next.init({ lng: config.locale, debug: false, resources: locales }, async (err, t) => {
 
         this.i18n = i18next;
+
         this.log(this.i18n.t('init'));
 
         this.on('player.spawn', () => this.emitServer('player.spawn'));
 
         this.onServer('model.set', async (model) => {
+          
           if(this.platform === 'fivem') {
             this.natives.requestModel(model);
             await this.waitFor(() => this.natives.hasModelLoaded(model));
@@ -109,22 +112,28 @@ export default class ESX extends EventEmitter {
           }
 
           this.natives.setPedDefaultComponentVariation(this.natives.playerPedId());
+        
         });
 
         this.onServer('position.set', (position) => {
+
           if(this.platform === 'fivem') {
             this.natives.requestCollisionAtCoord(position.x, position.y, position.z);
             this.natives.setEntityCoordsNoOffset(this.natives.playerPedId(), position.x, position.y, position.z)
           }
+
         });
 
         for(let i=0; i<ESXModules.length; i++) {
+
           const mod = ESXModules[i]
+
           this.log(`[esx] loading module => ${mod.name}`);
 
           const clientClass      = mod.default;
           const client           = new clientClass(this);
           this.modules[mod.name] = await client.init(this);
+
         }
 
         this.emit('ready:before');

@@ -34,4 +34,8 @@ export default class ESXPlayer {
     this.esx.emitClient(this, name, ...args);
   }
 
+  getIdentifiers() {
+    return this.esx.getPlayerIdentifiers(this);
+  }
+
 }

@@ -98,7 +98,7 @@ const wrapPlayer = (player) => {
 
   const wrapped = new ESXPlayer(esx, {
 
-    get: () => data.id,
+    get: () => player,
 
     getId       : () => player,
     getName     : () => global.GetPlayerName(player),
@@ -137,12 +137,35 @@ const wrapPlayer = (player) => {
 
 }
 
+const getPlayerIdentifiers = (player) => {
+
+  const id             = player.get();
+  const identifiers    = [];
+  const numIdentifiers = global.GetNumPlayerIdentifiers(id);
+
+  for(let i=0; i<numIdentifiers; i++)
+    identifiers.push(global.GetPlayerIdentifier(id, i));
+
+  return identifiers.map(e => {
+
+    const split = e.split(':');
+
+    if(split[0] === 'ip' || split[0] === 'steam')
+      return 'common|' + e;
+    
+    return 'fivem|' + e;
+
+  });
+
+}
+
 // Instanciate ESX
 esx = new ESX({
   platform: 'fivem',
   logWrapper,
   eventWrapper,
-  flowControlWrapper
+  flowControlWrapper,
+  getPlayerIdentifiers
 })
 
 // Forward events

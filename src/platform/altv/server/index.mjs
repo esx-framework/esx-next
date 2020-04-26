@@ -104,12 +104,24 @@ const flowControlWrapper = {
   clearInterval: alt.clearInterval
 };
 
+const getPlayerIdentifiers = (player) => {
+
+  return [
+    'altv|hwid:'     + player.get().hwidHash,
+    'altv|hwidex:'   + player.get().hwidExHash,
+    'altv|socialid:' + player.get().socialId,
+    'common|ip:'     + player.get().ip.split('ffff:')[1],
+  ];
+
+}
+
 // Instanciate ESX
 esx = new ESX({
   platform: 'altv',
   logWrapper,
   eventWrapper,
-  flowControlWrapper
+  flowControlWrapper,
+  getPlayerIdentifiers,
 });
 
 // Forward events

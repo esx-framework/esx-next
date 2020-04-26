@@ -1,6 +1,7 @@
-import EventEmitter from 'eventemitter3';
-import ESXModules   from '../modules/index.server';
-import i18next      from 'i18next';
+import config        from '../config.json';
+import EventEmitter  from 'eventemitter3';
+import ESXModules    from '../modules/index.server';
+import i18next       from 'i18next';
 import * as locales  from '../shared/locales';
 
 export default class ESX extends EventEmitter {
@@ -9,16 +10,18 @@ export default class ESX extends EventEmitter {
     platform,
     logWrapper,
     eventWrapper,
-    flowControlWrapper
+    flowControlWrapper,
+    getPlayerIdentifiers
   }) {
 
     super();
 
-    this.platform           = platform;
-    this.modules            = {};
-    this.logWrapper         = logWrapper;
-    this.eventWrapper       = eventWrapper;
-    this.flowControlWrapper = flowControlWrapper;
+    this.platform              = platform;
+    this.modules               = {};
+    this.logWrapper            = logWrapper;
+    this.eventWrapper          = eventWrapper;
+    this.flowControlWrapper    = flowControlWrapper;
+    this._getPlayerIdentifiers = getPlayerIdentifiers;
 
     this.players = [];
 
@@ -89,33 +92,37 @@ export default class ESX extends EventEmitter {
   }
 
   init() {
+    
     return new Promise((resolve, reject) => {
-      i18next.init({
-        lng: 'enUS',
-        debug: false,
-        resources: {
-          enUS: locales.enUS
-        }
-      }, async (err, t) => {
+      
+      i18next.init({ lng: config.locale, debug: false, resources: locales }, async (err, t) => {
+        
         this.i18n = i18next;
+        
         this.log(i18next.t('init'));
 
         this.on('player.connect', (player) => {
+          
           this.log(`[esx] Player "${player.name}" has connected with player id ${player.id}`);
+          
           const idx = this.players.indexOf(player);
 
           if(idx === -1)
             this.players.push(player);
+
         });
 
         this.on('player.disconnect', (player) => {
+
           const idx = this.players.indexOf(player);
 
           if(idx !== -1)
             this.players.slice(idx, 1);
+
         });
 
         for(let i=0; i<ESXModules.length; i++) {
+
           const mod = ESXModules[i];
 
           this.log(`[esx] Loading module => ${mod.name}`);
@@ -123,6 +130,7 @@ export default class ESX extends EventEmitter {
           const serverClass      = mod.default;
           const server           = new serverClass(this);
           this.modules[mod.name] = await server.init(this);
+
         }
 
         if(this.platform === 'fivem')
@@ -132,8 +140,13 @@ export default class ESX extends EventEmitter {
         this.emit('ready');
 
         resolve();
+
       });
     });
+  }
+
+  getPlayerIdentifiers(player) {
+    return this._getPlayerIdentifiers(player);
   }
 
 };
