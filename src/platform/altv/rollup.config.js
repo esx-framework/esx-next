@@ -5,11 +5,11 @@ import json          from '@rollup/plugin-json';
 import {terser}      from 'rollup-plugin-terser'
 import nodePolyfills from 'rollup-plugin-node-polyfills';
 import copy          from 'rollup-plugin-copy';
-import externals     from 'rollup-plugin-node-externals'
 
-const production = !process.env.ROLLUP_WATCH;
-
+const production    = !process.env.ROLLUP_WATCH;
 const RESOURCE_NAME = 'esx.altv';
+const pkg           = require(__dirname + '../../../../package.json');
+const external      = ['fs', 'path'].concat(Object.keys(pkg.dependencies));
 
 export default[
 
@@ -23,7 +23,7 @@ export default[
       sourcemap: true,
     },
 
-    external: ['alt', 'natives'],
+    external: ['alt', 'natives'].concat(external),
 
     plugins: [
       resolve(), // tells Rollup how to find date-fns in node_modules
@@ -56,13 +56,9 @@ export default[
       sourcemap: true,
     },
 
-    external: ['alt'],
+    external: ['alt'].concat(external),
 
     plugins: [
-      externals({
-        packagePath: path.join(__dirname, '../../../package.json'),
-        exclude: ['@math.gl/core']
-      }),
       resolve(), // tells Rollup how to find date-fns in node_modules
       json(),
       commonjs(),
@@ -71,6 +67,10 @@ export default[
         targets: [
           {
             src : path.join(__dirname, '../../../package.json').replace(/\\/g, '/'),
+            dest: path.join(__dirname, '../../../dist/' + RESOURCE_NAME).replace(/\\/g, '/')
+          },
+          {
+            src : path.join(__dirname, '../../../package-lock.json').replace(/\\/g, '/'),
             dest: path.join(__dirname, '../../../dist/' + RESOURCE_NAME).replace(/\\/g, '/')
           }
         ]

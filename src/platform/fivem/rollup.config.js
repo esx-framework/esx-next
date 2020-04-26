@@ -5,11 +5,11 @@ import json          from '@rollup/plugin-json';
 import {terser}      from 'rollup-plugin-terser'
 import nodePolyfills from 'rollup-plugin-node-polyfills';
 import copy          from 'rollup-plugin-copy';
-import externals     from 'rollup-plugin-node-externals';
 
-const production = !process.env.ROLLUP_WATCH;
-
+const production    = !process.env.ROLLUP_WATCH;
 const RESOURCE_NAME = 'esx.fivem';
+const pkg           = require(__dirname + '../../../../package.json');
+const external      = ['fs', 'path'].concat(Object.keys(pkg.dependencies));
 
 export default[
 
@@ -32,11 +32,11 @@ export default[
       copy({
         targets: [
           {
-            src : path.join(__dirname, 'resource/*')                    .replace(/\\/g, '/'),
+            src : path.join(__dirname, 'resource/*').replace(/\\/g, '/'),
             dest: path.join(__dirname, '../../../dist/' + RESOURCE_NAME).replace(/\\/g, '/')
           },
           {
-            src : path.join(__dirname, '../../html/main/*')                       .replace(/\\/g, '/'),
+            src : path.join(__dirname, '../../html/main/*').replace(/\\/g, '/').replace(/\\/g, '/'),
             dest: path.join(__dirname, '../../../dist/' + RESOURCE_NAME + '/html').replace(/\\/g, '/')
           }
         ],
@@ -54,21 +54,21 @@ export default[
       sourcemap: true,
     },
 
-    external: [],
-
+    external: external,
+    
     plugins: [
-      externals({
-        packagePath: path.join(__dirname, '../../../package.json'),
-        exclude: ['@math.gl/core']
-      }),
       resolve(), // tells Rollup how to find date-fns in node_modules
-      json(),
       commonjs(),
+      json(),
       production && terser(),
       copy({
         targets: [
           {
             src : path.join(__dirname, '../../../package.json').replace(/\\/g, '/'),
+            dest: path.join(__dirname, '../../../dist/' + RESOURCE_NAME).replace(/\\/g, '/')
+          },
+          {
+            src : path.join(__dirname, '../../../package-lock.json').replace(/\\/g, '/'),
             dest: path.join(__dirname, '../../../dist/' + RESOURCE_NAME).replace(/\\/g, '/')
           }
         ]
