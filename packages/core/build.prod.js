@@ -9,6 +9,7 @@ async function build() {
         target: ["chrome58"],
         minify: true,
         format: "iife",
+        keepNames: true,
     }).then(() => console.log(chalk.green("[client]: Built successfully!"))).catch(() => process.exit(1))
 
     require('esbuild').build({
@@ -18,6 +19,7 @@ async function build() {
         format: "cjs",
         minify: true,
         platform: "node",
+        keepNames: true,
     }).then(() => console.log(chalk.green("[server]: Built successfully!"))).catch(() => process.exit(1))
 }
 
