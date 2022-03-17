@@ -1,8 +1,7 @@
-import {NET_EVENT_HANDLER_PROP, NET_DECL_ARGS, EVENT_HANDLER_PROP} from "../skeleton/constants";
-import {Player} from "../classes/player";
-import {resolveDecoratedParams} from "../skeleton/param.resolver";
+import {NET_EVENT_HANDLER_PROP, EVENT_HANDLER_PROP} from "../skeleton/constants";
 import {attachMeta} from "../skeleton/meta";
-import {runNetPipeline} from "../skeleton/nethost";
+import {callInCtx} from "../skeleton/rthost";
+import {createChain, RpcContext} from "./rpc.decorator";
 
 /**
  * Decorator to mark a method as a net event listener
@@ -11,13 +10,19 @@ import {runNetPipeline} from "../skeleton/nethost";
  *
  */
 
+export type EventContext = Omit<RpcContext, "getReqId">
+
+
+
+
 export const OnNet = (eventName: string) => {
     return (target: any, memberName: string, propertyDescr: PropertyDescriptor) => {
         attachMeta(target, memberName, NET_EVENT_HANDLER_PROP, true)
         const handler = target[memberName]
         onNet(eventName, (...payload: any[]) => {
             const src = source
-            runNetPipeline(target, memberName, eventName, payload, src)
+            const cx: EventContext = createChain(src, payload, "EVENT_NO_ID")
+            callInCtx(target, memberName, cx)
         })
     }
 }

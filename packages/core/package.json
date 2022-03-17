@@ -10,6 +10,7 @@
     "docs:server:build": "fliegdoc build"
   },
   "dependencies": {
+    "@reincarnatedjesus/f-chain": "^1.1.5",
     "uuidv4": "^6.2.12"
   },
   "devDependencies": {

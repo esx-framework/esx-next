@@ -86,6 +86,10 @@ class Principal {
         constructAceCommand("add", this, ace, false)
     }
 
+    public command(cmdName: string) {
+        return Principal.from(`command.${cmdName}`)
+    }
+
 }
 
 
@@ -101,9 +105,6 @@ export class PlayerPermissionManager {
     public isAceAllowed(ace: Principal) {
         return IsPlayerAceAllowed(this.player.getSourceAs("string"), ace.toString())
     }
-
-
-
 
     public getPrincipalFor(kind: Identifiers) {
         const ident = this.player.getIdentifier(kind)
