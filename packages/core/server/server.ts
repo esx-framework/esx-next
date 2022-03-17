@@ -1,17 +1,21 @@
-import "reflect-metadata"
-import {run} from "./paramtest";
-import {RPC} from "./decorators/rpc.decorator";
-import {getMeta} from "./meta";
-import {INTERNAL_ARGS, INTERNAL_RPC_DRIVER} from "./constants";
-import {Payload, Source} from "./decorators/netargs.decorator";
+import {Meta, Reflector} from "./decorators/meta.decorator";
+import {ClassReflector} from "./classes/reflector";
+import {resolveDecoratedParams} from "./param.resolver";
 
+
+@Meta("classwide", "classwidehello")
 class Lol {
-    @RPC("TEST")
-    public method(@Source() src: number, @Payload() pload: any) {
-
+    @Meta("local", "hello")
+    public method(@Reflector() reflector: ClassReflector) {
+        console.log(reflector.getMeta("classwide"))
+        console.log(reflector.getContextMeta("local"))
     }
 }
 
 const cls = new Lol()
-console.log(getMeta(cls, "method", INTERNAL_ARGS))
+const meth = resolveDecoratedParams(cls, "method", {})
+//console.log(getMeta(cls, "method", INTERNAL_ARGS))
+// @ts-ignore
+cls.method(...meth)
+
 

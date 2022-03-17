@@ -7,10 +7,7 @@
     "build": "tsc -p server && tsc -p client && node build.prod.js",
     "dev": "node build.dev.js"
   },
-  "dependencies": {
-    "dset": "^3.1.1",
-    "reflect-metadata": "^0.1.13"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@citizenfx/client": "^2.0.4793-1",
     "@citizenfx/server": "^2.0.4793-1",
