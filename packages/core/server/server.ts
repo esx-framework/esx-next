@@ -1,23 +1,24 @@
-import {resolveDecoratedParams} from "./skeleton/param.resolver";
-import {OnNet, Payload, Source} from "./decorators";
+import {Augments, ComponentAugmenter} from "./decorators";
 import {Testing} from "./testing/manager";
 import {Config} from "./index";
 import {DEFAULT_CONFIG} from "./skeleton/constants";
+import {Player} from "./classes/player";
 
 Testing.stub()
-class Lol {
-    @OnNet("test")
-    public method(@Payload() pload: string, @Source() src: number) {
-        console.log("test payload:", pload, "source", src)
+Testing.defStub("GetNumPlayerIdentifiers", () => 0)
+
+@Augments("player")
+class Lol implements ComponentAugmenter<typeof Player>{
+
+    onInit(params: any): any {
+        console.log("Augmented component mounted")
     }
 }
+new Lol()
 
-const cls = new Lol()
-
-
-Testing.emitNetEventWithSource("test", 1, "hello there")
-
-
+const ply = new Player(10)
+const comp = ply.getComponent("Lol")
+console.log(comp)
 let config: Partial<Config>;
 export function setConfig(cf: Partial<Config>) {
     config = cf

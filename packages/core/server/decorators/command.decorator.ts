@@ -23,7 +23,6 @@ const mock = createChain(0, [], "")
 
 export type CommandContext = typeof mock;
 
-TODO("Create event ctx type")
 
 export const Command = (name: string, checkAce = true) => {
     return (target: any, memberName: string, propertyDescr: PropertyDescriptor) => {

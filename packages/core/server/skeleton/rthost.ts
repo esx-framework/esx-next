@@ -18,9 +18,9 @@ import {
 import {chainedSwitch} from "../utils";
 import {Player} from "../classes/player";
 import {PlayerPermissionManager} from "../classes/permmgr";
-import {EventContext} from "../decorators";
 import {CommandContext} from "../decorators/command.decorator";
 import {resolveDecoratedParams} from "./param.resolver";
+import {EventContext} from "../decorators/event.decorator";
 
 interface ContextCallResult<T> {
     reachedEnd: boolean,

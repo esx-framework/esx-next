@@ -32,7 +32,7 @@ const emitStub = (eventName: string, ...args: any[]) => {
     })
 }
 
-export const createStub = (functionName: string, fn: Function, force = false) => {
+export const createStub = (functionName: keyof typeof global, fn: Function, force = false) => {
     // @ts-ignore
     global[functionName] = force ? fn : global[functionName] || fn
 }

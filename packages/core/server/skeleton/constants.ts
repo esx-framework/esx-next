@@ -1,11 +1,16 @@
 import {Player} from "../classes/player";
 import {PlayerPermissionManager} from "../classes/permmgr";
-import {Config, EventContext, RpcContext} from "../index";
+import {Config} from "../index";
 import {CommandContext} from "../decorators/command.decorator";
+import {RpcContext} from "../decorators/rpc.decorator";
+import {EventContext} from "../decorators/event.decorator";
 
 export const INTERNAL_RPC_DRIVER = "__ESX_DRIVER"
 export const INTERNAL_ARGS = "__ESX_ARG_REFL"
 export const META_KEY = "__ESX_META_BUCKET"
+export const AUGMENT_KEY = "__ESX_AUGMENTED"
+export const CLASSWIDE_META = "CLASS_META"
+export const AUGMENT_MAP = "__ESX_AUG_MAP"
 
 export const GET_PLAYER_DECL_ARG = "GET_PLAYER"
 export const GET_SOURCE_DECL_ARG = "GET_SOURCE"
@@ -13,7 +18,6 @@ export const GET_PAYLOAD_DECL_ARG = "GET_PAYLOAD"
 export const GET_PERM_DECL_ARG = "GET_PERMS"
 export const GET_ARGS_DECL_ARG = "GET_ARGS"
 export const GET_RAW_CMD_DECL_ARG = "GET_RAW_CMD"
-
 
 
 export const getValidatorKey = (args: NET_DECL_ARGS) => {
@@ -56,7 +60,6 @@ export type NET_DECL_ARGS = typeof GET_PLAYER_DECL_ARG | typeof GET_SOURCE_DECL_
 
 export type ValidatorSigs = ArgValidatorSig | RawCmdValidatorSig | SourceValidatorSig | PayloadValidatorSig | PermValidatorSig | PlayerValidatorSig
 
-export const CLASSWIDE_META = "CLASS_META"
 
 export const metaName = (name: string) => `_META:${name}`
 export const generateRpcPair = (name: string, id: string) => ({recv: `ESX:RPC:${name}:RECV`, uuid: id, reply: `ESX:RPC:${name}:REPL:${id}`})
@@ -65,6 +68,7 @@ export const generateRpcPair = (name: string, id: string) => ({recv: `ESX:RPC:${
 export const NET_EVENT_HANDLER_PROP = "NET_EVENT_HANDLER_PROP"
 export const EVENT_HANDLER_PROP = "EVENT_HANDLER_PROP"
 export const RPC_HANDLER_PROP = "RPC_HANDLER_PROP"
+
 
 export const TODO = (text: string) => {
     throw new Error(`TODO: ${text}`)
@@ -81,3 +85,4 @@ export const VALIDATOR_FAILED = "VALIDATOR_FAILED"
 export const HANDLER_ERROR = "HANDLER_ERROR"
 export const NO_FAIL = "NO_FAIL"
 export type FailReasons = typeof VALIDATOR_FAILED | typeof HANDLER_ERROR | typeof NO_FAIL
+export type Component = "player"
