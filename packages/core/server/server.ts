@@ -1,21 +1,30 @@
-import {Meta, Reflector} from "./decorators/meta.decorator";
-import {ClassReflector} from "./classes/reflector";
-import {resolveDecoratedParams} from "./param.resolver";
+import {resolveDecoratedParams} from "./skeleton/param.resolver";
+import {OnNet, Payload, Source} from "./decorators";
+import {Testing} from "./testing/manager";
+import {Config} from "./index";
+import {DEFAULT_CONFIG} from "./skeleton/constants";
 
-
-@Meta("classwide", "classwidehello")
+Testing.stub()
 class Lol {
-    @Meta("local", "hello")
-    public method(@Reflector() reflector: ClassReflector) {
-        console.log(reflector.getMeta("classwide"))
-        console.log(reflector.getContextMeta("local"))
+    @OnNet("test")
+    public method(@Payload() pload: string, @Source() src: number) {
+        console.log("test payload:", pload, "source", src)
     }
 }
 
 const cls = new Lol()
-const meth = resolveDecoratedParams(cls, "method", {})
-//console.log(getMeta(cls, "method", INTERNAL_ARGS))
-// @ts-ignore
-cls.method(...meth)
 
 
+Testing.emitNetEventWithSource("test", 1, "hello there")
+
+
+let config: Partial<Config>;
+export function setConfig(cf: Partial<Config>) {
+    config = cf
+}
+
+
+
+export function getConfigField<T extends keyof Config>(key: T) {
+    return config[key] || DEFAULT_CONFIG[key]
+}

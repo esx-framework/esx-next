@@ -1,5 +1,5 @@
-import {INTERNAL_ARGS} from "./constants";
-import {attachMeta, getMeta} from "./meta";
+import {INTERNAL_ARGS} from "./skeleton/constants";
+import {attachMeta, getMeta} from "./skeleton/meta";
 
 const ParamDecor = (val: any) => {
     return (target: any, propKey: string, idx: number) => {

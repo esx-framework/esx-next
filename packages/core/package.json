@@ -9,7 +9,9 @@
     "docs:server:start": "fliegdoc serve",
     "docs:server:build": "fliegdoc build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "uuidv4": "^6.2.12"
+  },
   "devDependencies": {
     "@citizenfx/client": "^2.0.4793-1",
     "@citizenfx/server": "^2.0.4793-1",
