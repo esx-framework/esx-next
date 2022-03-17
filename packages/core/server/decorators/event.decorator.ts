@@ -5,6 +5,8 @@ import {resolveDecoratedParams} from "../param.resolver";
 /**
  * Decorator to mark a method as a net event listener
  * @param eventName
+ * 
+ * 
  */
 
 export const OnNet = (eventName: string) => {
@@ -24,6 +26,8 @@ export const OnNet = (eventName: string) => {
 /**
  * Decorator to mark a method as an event listener
  * @param eventName
+ * 
+ * 
  */
 export const On = (eventName: string) => {
     return (target: any, memberName: string, propertyDescr: PropertyDescriptor) => {

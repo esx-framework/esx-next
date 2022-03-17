@@ -1,4 +1,5 @@
 {
+  "extends": "@tsconfig/docusaurus/tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -16,8 +17,8 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "noEmit": true
+    "noEmit": true,
   },
   "include": ["./**/*", "../common/**/*"],
-  "exclude": ["**/node_modules"]
+  "exclude": ["**/node_modules"],
 }

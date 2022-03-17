@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -p server && tsc -p client && node build.prod.js",
-    "dev": "node build.dev.js"
+    "dev": "node build.dev.js",
+    "docs:server:start": "fliegdoc serve",
+    "docs:server:build": "fliegdoc build"
   },
   "dependencies": {},
   "devDependencies": {
@@ -14,6 +16,7 @@
     "@types/node": "^16.3.1",
     "chalk": "^5.0.0",
     "esbuild": "^0.14.10",
-    "typescript": "^4.3.5"
+    "fliegdoc": "^0.5.1",
+    "typescript": "^4.6.2"
   }
 }

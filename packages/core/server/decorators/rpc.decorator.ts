@@ -5,7 +5,9 @@ import {attachMeta} from "../meta";
 /**
  * Decorator to mark a method as an RPC ("server callback") listener
  * @param name
- * @constructor
+ * 
+ * 
+ * 
  */
 export const RPC = (name: string) => {
     return (target: any, memberName: string, propertyDescr: PropertyDescriptor) => {
