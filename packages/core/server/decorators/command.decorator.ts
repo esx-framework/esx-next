@@ -8,6 +8,7 @@ import {
 import {Player} from "../classes/player";
 import {attachMeta, getMeta} from "../skeleton/meta";
 import {createChainedFunction} from "@reincarnatedjesus/f-chain";
+import {callInCtx} from "../skeleton/rthost";
 
 
 
@@ -24,10 +25,13 @@ export type CommandContext = typeof mock;
 
 TODO("Create event ctx type")
 
-export const Command = (name: string, checkAce = true, validatorFn?: PlayerValidatorSig) => {
-RegisterCommand(name, (src: number, args: string[], raw: string) => {
-
-}, checkAce)
+export const Command = (name: string, checkAce = true) => {
+    return (target: any, memberName: string, propertyDescr: PropertyDescriptor) => {
+        RegisterCommand(name, async (src: number, args: string[], raw: string) => {
+            const ctx = createChain(src, args, raw)
+            const res = await callInCtx(target, memberName, ctx)
+        }, checkAce)
+    }
 }
 
 

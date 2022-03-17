@@ -11,7 +11,7 @@ import {
     FailReasons,
     getValidatorKey, HANDLER_ERROR,
     INTERNAL_ARGS,
-    NET_DECL_ARGS, NO_FAIL,
+    NET_DECL_ARGS, NO_FAIL, TODO,
     VALIDATOR_FAILED,
     ValidatorSigs
 } from "./constants";
@@ -33,7 +33,7 @@ export async function callInCtx<T = never>(target: any, prop: string, cx: CtxDec
     const meta = getMeta<NET_DECL_ARGS[]>(target, prop, INTERNAL_ARGS)
     const ply = new Player(cx.getSource())
     const permMgr = new PlayerPermissionManager(ply)
-    for (const [argIdx, argDecl] of Object.entries(meta)) {
+    for (const argDecl of meta) {
         const validatorArg = getValidatorKey(argDecl)
         const validatorFn = getMeta<ValidatorSigs>(target, prop, validatorArg) || ((cx: CtxDecl, ...data: unknown[]) => true)
         const toInspect = chainedSwitch<typeof validatorArg, any>(validatorArg)
@@ -61,6 +61,7 @@ export async function callInCtx<T = never>(target: any, prop: string, cx: CtxDec
         const ret = await handlerRef(...args)
         return {reachedEnd: true, reason: NO_FAIL, result: ret}
     } catch (err) {
+        TODO!("better error handling")
         return {reachedEnd: false, reason: HANDLER_ERROR, result: err}
     }
 

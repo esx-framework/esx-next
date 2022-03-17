@@ -40,17 +40,13 @@ export const RPC = (name: string) => {
         onNet(recv, async ({id, payload}: { payload: any[], id: string }) => {
             const src = source
             const handler = target[memberName]
-            try {
                 const ply = new Player(src)
                 const cx: RpcContext = createChain(src, payload, id)
-
-                const res = await callInCtx(target, memberName, cx)
-                const {reply} = generateRpcPair(name, id)
-                emitNet(reply, src, res)
-            } catch (err) {
-                handleError(err, "RPC")
-                TODO("Error handling for RPC")
-            }
+                const res = await callInCtx<any>(target, memberName, cx)
+                if (res.reachedEnd) {
+                    const {reply} = generateRpcPair(name, id)
+                    emitNet(reply, src, res.result)
+                }
 
         })
     }

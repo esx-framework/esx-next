@@ -19,10 +19,10 @@ export const OnNet = (eventName: string) => {
     return (target: any, memberName: string, propertyDescr: PropertyDescriptor) => {
         attachMeta(target, memberName, NET_EVENT_HANDLER_PROP, true)
         const handler = target[memberName]
-        onNet(eventName, (...payload: any[]) => {
+        onNet(eventName, async (...payload: any[]) => {
             const src = source
             const cx: EventContext = createChain(src, payload, "EVENT_NO_ID")
-            callInCtx(target, memberName, cx)
+            await callInCtx(target, memberName, cx)
         })
     }
 }
