@@ -3,18 +3,18 @@ import {attachMeta} from "../skeleton/meta";
 import {callInCtx} from "../skeleton/rthost";
 import {createChain, RpcContext} from "./rpc.decorator";
 
+
+
+export type EventContext = Omit<RpcContext, "getReqId">
+
+
+
 /**
  * Decorator to mark a method as a net event listener
  * @param eventName
  *
  *
  */
-
-export type EventContext = Omit<RpcContext, "getReqId">
-
-
-
-
 export const OnNet = (eventName: string) => {
     return (target: any, memberName: string, propertyDescr: PropertyDescriptor) => {
         attachMeta(target, memberName, NET_EVENT_HANDLER_PROP, true)
