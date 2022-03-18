@@ -2,13 +2,13 @@ import {AUGMENT_KEY, AUGMENT_MAP, Component} from "../skeleton/constants";
 import {attachMeta} from "../skeleton/meta";
 
 
-const augmenters = new Map<Component, any[]>()
+const augmenters = new Map<Component | string, any[]>()
 
 /**
  * Marks a class as an augmentation for a component (available via the `.getComponent()` method`)
  * @param component
  */
-export const Augments = (component: Component) => {
+export const Augments = (component: Component | string) => {
     return (target: Function) => {
         const augs = augmenters.get(component) || []
         augs.push(target)
@@ -23,7 +23,7 @@ export interface ComponentAugmenter<T extends abstract new (...args: any) => any
     onInit: (...params: ConstructorParameters<T>) => any
 }
 
-export const Augmentable = (refName: Component): any => {
+export const Augmentable = (refName: Component | string): any => {
     return (target: any) => {
         return class extends target {
             constructor(...args: any[]) {
