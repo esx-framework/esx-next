@@ -33,7 +33,7 @@ export const Augmentable = (refName: Component): any => {
                     try {
                         ag.onInit(...args)
                     } catch (err) {
-                        throw new Error(`Failed to attach augmenting class ${aug.name} to ${target.name} due to ${err}`)
+                        throw new Error(`Failed to attach augmenting class ${aug.name} to ${target.name} due to ComponentAugmenter<${"typeof"}${target.name}> not being implemented in ${aug.name}`)
                     }
                     return {inst: ag, name: aug.name}
                 })

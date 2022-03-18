@@ -89,6 +89,12 @@ class Principal {
     public command(cmdName: string) {
         return Principal.from(`command.${cmdName}`)
     }
+    public allowPrincipal(pric: Principal) {
+        constructPrincipalCommand("add", this, pric)
+    }
+    public denyPrincipal(pric: Principal) {
+        constructPrincipalCommand("revoke", this, pric)
+    }
 
 }
 
