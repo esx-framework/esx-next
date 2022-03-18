@@ -1,4 +1,4 @@
-import {Augments, ComponentAugmenter} from "./decorators";
+import {Augments, ComponentAugmenter} from "./decorators/augments.decorator";
 import {Testing} from "./testing/manager";
 import {Config} from "./index";
 import {DEFAULT_CONFIG} from "./skeleton/constants";
@@ -8,9 +8,9 @@ Testing.stub()
 Testing.defStub("GetNumPlayerIdentifiers", () => 0)
 
 @Augments("player")
-class Lol implements ComponentAugmenter<typeof Player>{
+class Lol implements ComponentAugmenter<typeof Player> {
 
-    onInit(params: any): any {
+    onMount(hello: number): any {
         console.log("Augmented component mounted")
     }
 }

@@ -3,12 +3,12 @@
  *
  */
 import {PlayerPermissionManager} from "./permmgr";
-import {AUGMENT_KEY, AUGMENT_MAP, Identifiers} from "../skeleton/constants";
-import {Augmentable, AugmentableComponent} from "../decorators/augments.decorator";
-import {getMeta} from "../skeleton/meta";
+import {Identifiers} from "../skeleton/constants";
+import {Augmentable, AugmentableComponent, getComponentInClassCtx} from "../decorators/augments.decorator";
 
 @Augmentable("player")
 export class Player implements AugmentableComponent {
+    public getComponent: <C>(name: string) => C
     private static identifierStore = new Map<number, Map<Identifiers, string>>()
     private readonly permManager = new PlayerPermissionManager(this)
     private readonly idents = new Map<Identifiers, string>()
@@ -46,10 +46,6 @@ export class Player implements AugmentableComponent {
         }
     }
 
-    public getComponent<C>(name: string): C {
-        const comps = getMeta<any[]>(this, AUGMENT_KEY, AUGMENT_MAP)
-        return comps.filter(cmp => cmp.name === name)[0]?.inst
-    }
 
     public getPermManager() {
         return this.permManager
@@ -63,6 +59,5 @@ export class Player implements AugmentableComponent {
         //@ts-ignore
         return as === "string" ? this.src.toString() : this.src
     }
-
 
 }

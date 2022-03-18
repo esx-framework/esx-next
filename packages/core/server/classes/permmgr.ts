@@ -1,7 +1,9 @@
 import {Player} from "./player";
 import {Identifiers} from "../skeleton/constants";
 import {getConfigField} from "../server";
-
+import {Augmentable} from "../decorators";
+import {AugmentableComponent, getComponentSignature} from "../decorators/augments.decorator";
+import {getComponentInClassCtx} from "../decorators/augments.decorator";
 
 function constructPrincipalCommand(action: "add" | "revoke", child: Principal, parent: Principal, execute = true) {
     const str = `${action === "add" ? "add_principal" : "remove_principal"} ${child.toString()} ${parent.toString()}`
@@ -19,10 +21,13 @@ function constructAceCommand(action: "add" | "revoke", principal: Principal, ace
     return str
 }
 
-
-class Principal {
+@Augmentable("principal")
+class Principal implements AugmentableComponent {
+    public getComponent: getComponentSignature
     private readonly fields: Set<string> = new Set<string>()
     constructor() {}
+
+
     public addField(field: string) {
         this.fields.add(field)
     }
@@ -97,6 +102,7 @@ class Principal {
     public denyPrincipal(pric: Principal) {
         constructPrincipalCommand("revoke", this, pric)
     }
+
 
 }
 
