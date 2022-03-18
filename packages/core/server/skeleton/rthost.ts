@@ -1,13 +1,6 @@
-/*
-handler(...resolveDecoratedParams<NET_DECL_ARGS>(target, memberName, {
-                "GET_PLAYER": new Player(src),
-                "GET_PAYLOAD": payload,
-                "GET_SOURCE": src
-            }))
- */
 import {getMeta} from "./meta";
 import {
-    CtxDecl,
+    CtxDecl, ctxType, CtxType,
     FailReasons,
     getValidatorKey, HANDLER_ERROR,
     INTERNAL_ARGS,
@@ -19,7 +12,6 @@ import {chainedSwitch} from "../utils";
 import {Player} from "../classes/player";
 import {PlayerPermissionManager} from "../classes/permmgr";
 import {CommandContext} from "../decorators/command.decorator";
-import {resolveDecoratedParams} from "./param.resolver";
 import {EventContext} from "../decorators/event.decorator";
 
 interface ContextCallResult<T> {
@@ -28,35 +20,31 @@ interface ContextCallResult<T> {
     result: T
 }
 
-export async function callInCtx<T = never>(target: any, prop: string, cx: CtxDecl): Promise<ContextCallResult<T>> {
+export async function callInCtx<T = never>(target: any, prop: string, cx: CtxDecl, execType: CtxType): Promise<ContextCallResult<T>> {
+    TODO("Write fail logic if the calls doesnt match the current ctx")
+    const callContext = ctxType(execType)
     const handlerRef = target[prop]
     const meta = getMeta<NET_DECL_ARGS[]>(target, prop, INTERNAL_ARGS)
     const ply = new Player(cx.getSource())
     const permMgr = new PlayerPermissionManager(ply)
-    for (const argDecl of meta) {
+    const args: any[] = []
+    for (const [k, argDecl] of Object.entries(meta)) {
         const validatorArg = getValidatorKey(argDecl)
         const validatorFn = getMeta<ValidatorSigs>(target, prop, validatorArg) || ((cx: CtxDecl, ...data: unknown[]) => true)
         const toInspect = chainedSwitch<typeof validatorArg, any>(validatorArg)
-            .inspect("PAYLOAD_VALIDATOR", () => (<EventContext>cx).getPayload())
-            .inspect("SRC_VALIDATOR", () => cx.getSource())
-            .inspect("PLAYER_VALIDATOR", () => ply)
-            .inspect("PERM_VALIDATOR", () => permMgr)
-            .inspect("ARG_VALIDATOR", () => (<CommandContext>cx).getArgs())
-            .inspect("RAW_CMD_VALIDATOR", () => (<CommandContext>cx).getRawCmd())
+            .inspectIf("PAYLOAD_VALIDATOR", callContext.hasPayload, () => (<EventContext>cx).getPayload())
+            .inspectIf("SRC_VALIDATOR", callContext.hasSource, () => cx.getSource())
+            .inspectIf("PLAYER_VALIDATOR", callContext.hasPlayer,() => ply)
+            .inspectIf("PERM_VALIDATOR", callContext.hasPermManager,() => permMgr)
+            .inspectIf("ARG_VALIDATOR", callContext.hasArgs, () => (<CommandContext>cx).getArgs())
+            .inspectIf("RAW_CMD_VALIDATOR", callContext.hasRawCmd, () => (<CommandContext>cx).getRawCmd())
         const proceed = validatorFn(cx, toInspect)
         if (!proceed) {
             return {reachedEnd: false, reason: VALIDATOR_FAILED, result: undefined}
         }
-
+        args[(<any>k)] = toInspect
     }
-    const args = resolveDecoratedParams<NET_DECL_ARGS>(target, prop, {
-        "GET_PLAYER": ply,
-        "GET_PAYLOAD": (<EventContext>cx).getPayload(),
-        "GET_SOURCE": cx.getSource(),
-        "GET_PERMS": permMgr,
-        "GET_ARGS": (<CommandContext>cx).getArgs(),
-        "GET_RAW_CMD": (<CommandContext>cx).getRawCmd()
-    })
+
     try {
         const ret = await handlerRef(...args)
         return {reachedEnd: true, reason: NO_FAIL, result: ret}

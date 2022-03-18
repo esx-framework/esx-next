@@ -37,6 +37,20 @@ export const getValidatorKey = (args: NET_DECL_ARGS) => {
     }
 }
 export type CtxDecl = EventContext | RpcContext | CommandContext
+export const CTX_EVENT = "EVENT_CTX"
+export const CTX_RPC = "RPC_CTX"
+export const CTX_CMD = "CMD_CTX"
+
+export type CtxType = typeof CTX_CMD | typeof CTX_EVENT | typeof CTX_RPC
+
+export const ctxType = (typ: CtxType) => ({
+    hasPayload: () => typ === CTX_EVENT || typ === CTX_RPC,
+    hasSource: () => typ === CTX_EVENT || typ === CTX_RPC || typ === CTX_CMD,
+    hasArgs: () => typ === CTX_CMD,
+    hasRawCmd: () => typ === CTX_CMD,
+    hasPermManager: () => typ === CTX_EVENT || typ === CTX_RPC || typ === CTX_CMD,
+    hasPlayer: () => typ === CTX_EVENT || typ === CTX_RPC || typ === CTX_CMD,
+})
 
 export const ARG_VALIDATOR = "ARG_VALIDATOR"
 export type ArgValidatorSig = (cx: CtxDecl, args: string[]) => boolean

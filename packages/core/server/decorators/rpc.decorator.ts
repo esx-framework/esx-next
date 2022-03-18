@@ -1,18 +1,8 @@
-import {
-    generateRpcPair,
-    INTERNAL_RPC_DRIVER,
-    NET_DECL_ARGS,
-    NET_EVENT_HANDLER_PROP,
-    RPC_HANDLER_PROP, TODO
-} from "../skeleton/constants";
+import {CTX_RPC, generateRpcPair, RPC_HANDLER_PROP} from "../skeleton/constants";
 import {attachMeta} from "../skeleton/meta";
 import {Player} from "../classes/player";
-import {resolveDecoratedParams} from "../skeleton/param.resolver";
-import {PlayerPermissionManager} from "../classes/permmgr";
-import {handleError} from "../skeleton/errors";
 import {createChainedFunction} from "@reincarnatedjesus/f-chain";
 import {callInCtx} from "../skeleton/rthost";
-
 
 
 type RpcDelegate = {src: number, payload: any, __id: string}
@@ -42,7 +32,7 @@ export const RPC = (name: string) => {
             const handler = target[memberName]
                 const ply = new Player(src)
                 const cx: RpcContext = createChain(src, payload, id)
-                const res = await callInCtx<any>(target, memberName, cx)
+                const res = await callInCtx<any>(target, memberName, cx, CTX_RPC)
                 if (res.reachedEnd) {
                     const {reply} = generateRpcPair(name, id)
                     emitNet(reply, src, res.result)

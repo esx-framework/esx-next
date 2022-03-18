@@ -1,8 +1,7 @@
-import {NET_EVENT_HANDLER_PROP, EVENT_HANDLER_PROP} from "../skeleton/constants";
+import {CTX_EVENT, EVENT_HANDLER_PROP, NET_EVENT_HANDLER_PROP} from "../skeleton/constants";
 import {attachMeta} from "../skeleton/meta";
 import {callInCtx} from "../skeleton/rthost";
 import {createChain, RpcContext} from "./rpc.decorator";
-
 
 
 export type EventContext = Omit<RpcContext, "getReqId">
@@ -22,7 +21,7 @@ export const OnNet = (eventName: string) => {
         onNet(eventName, async (...payload: any[]) => {
             const src = source
             const cx: EventContext = createChain(src, payload, "EVENT_NO_ID")
-            await callInCtx(target, memberName, cx)
+            await callInCtx(target, memberName, cx, CTX_EVENT)
         })
     }
 }

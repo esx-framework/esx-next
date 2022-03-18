@@ -26,6 +26,6 @@ export function setConfig(cf: Partial<Config>) {
 
 
 
-export function getConfigField<T extends keyof Config>(key: T) {
+export function getConfigField<T extends keyof Config>(key: T): Config[T] {
     return config[key] || DEFAULT_CONFIG[key]
 }

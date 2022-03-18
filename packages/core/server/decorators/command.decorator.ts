@@ -1,15 +1,16 @@
 import {
     ARG_VALIDATOR,
     ArgValidatorSig,
-    GET_ARGS_DECL_ARG, GET_RAW_CMD_DECL_ARG,
+    CTX_CMD,
+    GET_ARGS_DECL_ARG,
+    GET_RAW_CMD_DECL_ARG,
     INTERNAL_ARGS,
-    PlayerValidatorSig, RAW_CMD_VALIDATOR, RawCmdValidatorSig, TODO
+    RAW_CMD_VALIDATOR,
+    RawCmdValidatorSig
 } from "../skeleton/constants";
-import {Player} from "../classes/player";
 import {attachMeta, getMeta} from "../skeleton/meta";
 import {createChainedFunction} from "@reincarnatedjesus/f-chain";
 import {callInCtx} from "../skeleton/rthost";
-
 
 
 type CommandDelegate = {args: string[], rawCmd: string, src: number}
@@ -28,7 +29,7 @@ export const Command = (name: string, checkAce = true) => {
     return (target: any, memberName: string, propertyDescr: PropertyDescriptor) => {
         RegisterCommand(name, async (src: number, args: string[], raw: string) => {
             const ctx = createChain(src, args, raw)
-            const res = await callInCtx(target, memberName, ctx)
+            const res = await callInCtx(target, memberName, ctx, CTX_CMD)
         }, checkAce)
     }
 }
