@@ -48,7 +48,11 @@ export const Augmentable = (refName: Component | string, implementGetter = true)
                     // @ts-ignore
                     return getComponentInClassCtx<C>(this, ...args)
                 } else {
-                    return target?.getComponent(...args)
+                    try {
+                        return target?.getComponent(...args)
+                    } catch (err) {
+                        return undefined
+                    }
                 }
             }
         }

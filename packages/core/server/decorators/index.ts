@@ -1,6 +1,5 @@
 export {OnNet, On} from "./event.decorator"
 export * from "./meta.decorator"
-export * from "./module.decorator"
 export {Player, Payload, Source, Permission} from "./args.decorator"
 export * from "./throttle.decorator"
 export {RPC} from "./rpc.decorator"

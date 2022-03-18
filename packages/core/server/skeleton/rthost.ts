@@ -1,6 +1,6 @@
 import {getMeta} from "./meta";
 import {
-    CtxDecl, ctxType, CtxType,
+    CtxDecl, createContextDescriptor, CtxType,
     FailReasons,
     getValidatorKey, HANDLER_ERROR,
     INTERNAL_ARGS,
@@ -22,7 +22,7 @@ interface ContextCallResult<T> {
 
 export async function callInCtx<T = never>(target: any, prop: string, cx: CtxDecl, execType: CtxType): Promise<ContextCallResult<T>> {
     TODO("Write fail logic if the calls doesnt match the current ctx")
-    const callContext = ctxType(execType)
+    const callContext = createContextDescriptor(execType)
     const handlerRef = target[prop]
     const meta = getMeta<NET_DECL_ARGS[]>(target, prop, INTERNAL_ARGS)
     const ply = new Player(cx.getSource())

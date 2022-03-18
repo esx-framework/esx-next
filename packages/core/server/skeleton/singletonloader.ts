@@ -1,10 +1,25 @@
-const mods = new Map<string, any>()
+import {getMeta} from "./meta";
+import {SINGLETON_DATA, SINGLETON_REGISTERED} from "./constants";
 
-export function registerModule(ref: any) {
-    mods.set(ref.name, new ref())
+const singletons = new Map<string, any>()
+
+
+export function registerSingleton(name: string, ref: any) {
+    singletons.set(name, ref)
 }
 
-export function getModuleRef<T>(name: string): T {
-    return mods.get(name)
+
+export function getSingletonRef<T>(name: string): T {
+    return singletons.get(name)
+}
+
+
+export function isSingletonCreated(name: string) {
+    return singletons.has(name)
+}
+
+
+export function isSingleton(target: any)  {
+    return getMeta<boolean>(target, SINGLETON_DATA, SINGLETON_REGISTERED) || false
 }
 
