@@ -1,8 +1,9 @@
-import {CTX_RPC, generateRpcPair, RPC_HANDLER_PROP} from "../skeleton/constants";
+import {CTX_RPC, RPC_HANDLER_PROP} from "../skeleton/constants";
 import {attachMeta} from "../skeleton/meta";
 import {Player} from "../classes/player";
 import {createChainedFunction} from "@reincarnatedjesus/f-chain";
 import {callInCtx} from "../skeleton/rthost";
+import {generateRpcPair} from "../utils";
 
 
 type RpcDelegate = {src: number, payload: any, __id: string}

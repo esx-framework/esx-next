@@ -1,25 +1,42 @@
-import {Augments, ComponentAugmenter} from "./decorators/augments.decorator";
+import {Augmentable, Augments, ComponentAugmenter} from "./decorators/augments.decorator";
 import {Testing} from "./testing/manager";
-import {Config} from "./index";
+import {Config, ESX} from "./index";
 import {DEFAULT_CONFIG} from "./skeleton/constants";
 import {Player} from "./classes/player";
+import {Logger} from "./classes/logger";
+import {Class, Inject, Singleton} from "./decorators/singleton.decorator";
+import {mock} from "./utils";
 
 Testing.stub()
 Testing.defStub("GetNumPlayerIdentifiers", () => 0)
+let config: Partial<Config> = {};
+export const INTERNAL_LOGGER = new Logger("ESX::CORE", getConfigField("minLogLevel"))
 
-@Augments("player")
-class Lol implements ComponentAugmenter<typeof Player> {
-
-    onMount(hello: number): any {
-        console.log("Augmented component mounted")
-    }
+@Singleton()
+class Lol  {
+public method() {
+    console.log("I am a method")
 }
-new Lol()
+}
+ESX.withSingletons([new Lol()])
+//testing, ignore
+@Class()
+class Receiver {
+    public method(@Inject("Lol") param: Lol) {
+        param.method()
+    }
 
-const ply = new Player(10)
-const comp = ply.getComponent("Lol")
-console.log(comp)
-let config: Partial<Config>;
+    public otherMethod(staticArg: number, @Inject("Lol") param?: Lol) {
+        console.log("Static arg was:", staticArg)
+        param.method()
+    }
+    public staticMethod() {}
+}
+const recv = new Receiver()
+recv.otherMethod(10)
+recv.method(10 as any)
+
+
 export function setConfig(cf: Partial<Config>) {
     config = cf
 }
@@ -27,5 +44,6 @@ export function setConfig(cf: Partial<Config>) {
 
 
 export function getConfigField<T extends keyof Config>(key: T): Config[T] {
+    // @ts-ignore
     return config[key] || DEFAULT_CONFIG[key]
 }

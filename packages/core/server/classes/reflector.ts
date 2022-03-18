@@ -1,5 +1,6 @@
 import {getMeta} from "../skeleton/meta";
-import {CLASSWIDE_META, metaName} from "../skeleton/constants";
+import {CLASSWIDE_META} from "../skeleton/constants";
+import {metaName} from "../utils";
 
 /**
  * Class to get metadata about the current context

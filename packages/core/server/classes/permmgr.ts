@@ -1,7 +1,8 @@
 import {Player} from "./player";
 import {Identifiers} from "../skeleton/constants";
 import {getConfigField} from "../server";
-import {Augmentable} from "../decorators";
+import {Augmentable} from "../decorators/augments.decorator";
+
 import {AugmentableComponent, getComponentSignature} from "../decorators/augments.decorator";
 import {getComponentInClassCtx} from "../decorators/augments.decorator";
 

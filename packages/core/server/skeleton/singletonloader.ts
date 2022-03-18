@@ -1,11 +1,13 @@
 import {getMeta} from "./meta";
 import {SINGLETON_DATA, SINGLETON_REGISTERED} from "./constants";
+import {INTERNAL_LOGGER} from "../server";
 
 const singletons = new Map<string, any>()
 
 
 export function registerSingleton(name: string, ref: any) {
     singletons.set(name, ref)
+    INTERNAL_LOGGER.debug(`Registered new singleton: ${name}`)
 }
 
 

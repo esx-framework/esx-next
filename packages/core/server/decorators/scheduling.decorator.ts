@@ -1,6 +1,5 @@
 import {attachMeta, getMeta} from "../skeleton/meta";
 import {
-    createContextDescriptor,
     CTX_INTERVAL,
     CTX_TICK,
     GET_INTERVAL_MGR,
@@ -11,6 +10,7 @@ import {
 } from "../skeleton/constants";
 import {TickManager} from "../classes/tickManager";
 import {IntervalManager} from "../classes/intervalManager";
+import {createContextDescriptor} from "../utils";
 
 //not using callInCtx from rthost here because performance matters
 /**

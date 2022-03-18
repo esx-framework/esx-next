@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@reincarnatedjesus/f-chain": "^1.1.5",
+    "tslog": "^3.3.2",
     "uuidv4": "^6.2.12"
   },
   "devDependencies": {

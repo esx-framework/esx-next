@@ -1,6 +1,7 @@
 import {attachMeta, getMeta} from "../skeleton/meta";
-import {CLASSWIDE_META, INTERNAL_ARGS, metaName} from "../skeleton/constants";
+import {CLASSWIDE_META, INTERNAL_ARGS} from "../skeleton/constants";
 import {ClassReflector} from "../classes/reflector";
+import {metaName} from "../utils";
 
 /**
  * Attaches metadata to the receiver of the decorator

@@ -1,4 +1,20 @@
 import {Context, createChainedFunction} from "@reincarnatedjesus/f-chain";
+import {
+    ARG_VALIDATOR,
+    CTX_CMD,
+    CTX_EVENT,
+    CTX_INTERVAL,
+    CTX_RPC,
+    CTX_TICK,
+    CtxType,
+    ExtraArgs,
+    NET_DECL_ARGS,
+    PAYLOAD_VALIDATOR,
+    PERM_VALIDATOR,
+    PLAYER_VALIDATOR,
+    RAW_CMD_VALIDATOR,
+    SRC_VALIDATOR
+} from "./skeleton/constants";
 
 export const chainedSwitch = <T, F extends unknown>(val: T) => createChainedFunction(() => val, {
     "inspect": (cx, val: T, resFactory: (val: T) => F = (v) => v as F) => {
@@ -16,3 +32,79 @@ export const chainedSwitch = <T, F extends unknown>(val: T) => createChainedFunc
         }
     }
 })()
+
+/**
+ * Function to mock a data type (useful when calling methods with some decorated params)
+ */
+export const mock = <T>(): T => {
+    return null as unknown as T
+}
+
+
+export const isArgGetterOfType = (name: string, type: string, defret = false) => {
+    try {
+        const [part] = name.split("::")
+        return part === type
+    } catch (err) {
+        return defret
+    }
+}
+export const getArgs = <T extends keyof ExtraArgs>(from: string): ExtraArgs[T] | undefined => {
+    try {
+        const [_, args] = from.split("::")
+        const parsed = JSON.parse(args)
+        return parsed
+    } catch (err) {
+        return undefined
+    }
+}
+export const appendArgs = (to: string, args: any[]) => `${to}::${JSON.stringify(args)}`
+
+export const createContextDescriptor = (typ: CtxType) => ({
+    hasPayload: () => typ === CTX_EVENT || typ === CTX_RPC,
+    hasSource: () => typ === CTX_EVENT || typ === CTX_RPC || typ === CTX_CMD,
+    hasArgs: () => typ === CTX_CMD,
+    hasRawCmd: () => typ === CTX_CMD,
+    hasPermManager: () => typ === CTX_EVENT || typ === CTX_RPC || typ === CTX_CMD,
+    hasPlayer: () => typ === CTX_EVENT || typ === CTX_RPC || typ === CTX_CMD,
+    hasIntervalRef: () => typ === CTX_INTERVAL,
+    hasTickId: () => typ === CTX_TICK
+})
+export const metaName = (name: string) => `_META:${name}`
+
+export const generateRpcPair = (name: string, id: string) => ({
+    recv: `ESX:RPC:${name}:RECV`,
+    uuid: id,
+    reply: `ESX:RPC:${name}:REPL:${id}`
+})
+
+export const TODO = (text: string) => {
+    throw new Error(`TODO: ${text}`)
+}
+
+export const getValidatorKey = (args: NET_DECL_ARGS) => {
+    switch (args) {
+        case "GET_PAYLOAD":
+            return PAYLOAD_VALIDATOR
+        case "GET_PERMS":
+            return PERM_VALIDATOR
+        case "GET_SOURCE":
+            return SRC_VALIDATOR
+        case "GET_PLAYER":
+            return PLAYER_VALIDATOR
+        case "GET_RAW_CMD":
+            return RAW_CMD_VALIDATOR
+        case "GET_ARGS":
+            return ARG_VALIDATOR
+        default:
+            return undefined
+    }
+}
+
+export const mergeArrays = <T extends ReadonlyArray<any>, F extends ReadonlyArray<any>>(target: T, arr: F): Array<T[number] | F[number]> => {
+    const merged: any[] = target as any
+    for (const [k, v] of Object.entries(arr)) {
+        merged[(k as unknown as any)] = v
+    }
+    return merged as Array<T[number] | F[number]>
+}
