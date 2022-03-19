@@ -51,8 +51,6 @@ export const Class = (): any => {
                     ctxProxy(this, k)
                 }
             }
-
-
         }
     }
 }

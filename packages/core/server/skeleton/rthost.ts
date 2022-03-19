@@ -64,7 +64,7 @@ export async function callInCtx<T = never>(target: any, prop: string, cx: CtxDec
     }
 
 }
-//function to avoid calling callInCtx on every method (performance reasons), usable with singleton decorators
+//function to make users able to call any method with decorated params
 export function ctxProxy(target: any, propKey: string) {
     INTERNAL_LOGGER.debug(`Creating proxy for ${propKey} in ${target[ORIG_CLASS_NAME]}`)
     const originalMethod = target[propKey]
