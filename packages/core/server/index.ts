@@ -6,6 +6,7 @@ import {Player} from "./classes/player"
 import {Identifiers, ORIG_CLASS_NAME} from "./skeleton/constants";
 import {registerSingleton} from "./skeleton/singletonloader";
 import {TLogLevelName} from "tslog";
+import "reflect-metadata"
 
 export const PlayerManager = Player
 export interface Config {

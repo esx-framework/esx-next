@@ -7,6 +7,7 @@ import {Logger} from "./classes/logger";
 import {Class, Inject, Singleton} from "./decorators/singleton.decorator";
 import {mock} from "./utils";
 import {EventContext} from "./decorators/event.decorator";
+import "reflect-metadata"
 
 Testing.stub()
 Testing.defStub("GetNumPlayerIdentifiers", () => 0)
@@ -33,7 +34,7 @@ class Receiver {
     }
     public staticMethod() {}
     @OnNet("hello")
-    public eventHandler(@Payload((pl: EventContext) => pl.getPayload()[0].prop == "hello") hello: any, @Source((cx, src) => src == 0) src: number, @Inject("Lol") param?: Lol) {
+    public eventHandler(@Payload((pl: EventContext) => pl.getPayload()[0].prop == "hello") hello: any, @Source((cx, src) => src == 0) src: number, @Inject("Lol") param: Lol) {
         console.log("all validators succeeded", hello)
         param.method()
     }
