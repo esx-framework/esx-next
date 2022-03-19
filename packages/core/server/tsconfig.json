@@ -17,7 +17,9 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     //"noEmit": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "declaration": true,
+    
   },
   "include": ["./**/*", "../common/**/*"],
   "exclude": ["**/node_modules"],

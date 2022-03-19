@@ -13,6 +13,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "declaration": true
   },
   "include": ["./**/*", "../common/**/*"],
   "exclude": ["**/node_modules"]

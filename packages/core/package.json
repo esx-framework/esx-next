@@ -7,10 +7,11 @@
     "build": "tsc -p server --outDir dist && tsc -p client --outDir dist && node bundle.js",
     "dev": "node build.dev.js",
     "docs:server:start": "fliegdoc serve",
-    "docs:server:build": "fliegdoc build"
+    "docs:server:build": "fliegdoc build",
+    "start:sv": "node dist/server.js"
   },
   "dependencies": {
-    "@reincarnatedjesus/f-chain": "^1.1.6",
+    "@reincarnatedjesus/f-chain": "^1.1.7",
     "reflect-metadata": "^0.1.13",
     "tslog": "^3.3.2",
     "uuidv4": "^6.2.12"
