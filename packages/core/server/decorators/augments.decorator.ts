@@ -32,7 +32,7 @@ export const Augmentable = (refName: Component | string, implementGetter = true)
     return (target: any) => class extends target {
             constructor(...args: any[]) {
                 super(...args);
-                const augs = augmenters.get(refName).map(aug => {
+                const augs = (augmenters.get(refName) || []).map(aug => {
                     const ag = new aug()
                     try {
                         ag.onMount(...args)

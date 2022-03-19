@@ -20,6 +20,7 @@ async function build() {
         minify: true,
         platform: "node",
         keepNames: true,
+        sourcemap: true
     }).then(() => console.log(chalk.green("[server]: Built successfully!"))).catch(() => process.exit(1))
 }
 

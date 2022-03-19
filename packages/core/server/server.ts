@@ -1,11 +1,12 @@
 import {Augmentable, Augments, ComponentAugmenter} from "./decorators/augments.decorator";
 import {Testing} from "./testing/manager";
-import {Config, ESX} from "./index";
+import {Config, ESX, OnNet, Payload, Source} from "./index";
 import {DEFAULT_CONFIG} from "./skeleton/constants";
 import {Player} from "./classes/player";
 import {Logger} from "./classes/logger";
 import {Class, Inject, Singleton} from "./decorators/singleton.decorator";
 import {mock} from "./utils";
+import {EventContext} from "./decorators/event.decorator";
 
 Testing.stub()
 Testing.defStub("GetNumPlayerIdentifiers", () => 0)
@@ -31,10 +32,14 @@ class Receiver {
         param.method()
     }
     public staticMethod() {}
+    @OnNet("hello")
+    public eventHandler(@Payload((pl: EventContext) => pl.getPayload()[0].prop == "hello") hello: any, @Source((cx, src) => src == 0) src: number, @Inject("Lol") param?: Lol) {
+        console.log("all validators succeeded", hello)
+        param.method()
+    }
 }
 const recv = new Receiver()
-recv.otherMethod(10)
-recv.method(10 as any)
+Testing.emitNetEventWithSource("hello", 0, {prop: "hello"})
 
 
 export function setConfig(cf: Partial<Config>) {

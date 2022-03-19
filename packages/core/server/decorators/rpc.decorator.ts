@@ -8,7 +8,7 @@ import {generateRpcPair} from "../utils";
 
 type RpcDelegate = {src: number, payload: any, __id: string}
 //exported because its used in events too, little messy
-export const createChain = (src: number, payload: any, id: string) => createChainedFunction(() => ({src: 0, payload: {}, __id: ""}), {
+export const createChain = (src: number, payload: any, id: string) => createChainedFunction(() => ({src, payload, __id: id}), {
     getPayload: (ctx) => ctx.getRoot<RpcDelegate>().payload,
     getSource: (ctx) => ctx.getRoot<RpcDelegate>().src,
     getReqId: (ctx) => ctx.getRoot<RpcDelegate>().__id
@@ -16,6 +16,7 @@ export const createChain = (src: number, payload: any, id: string) => createChai
 
 //mock to create a compile time type of the context
 const mock = createChain(0, {}, "")
+
 export type RpcContext = typeof mock;
 
 

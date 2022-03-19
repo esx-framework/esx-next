@@ -7,14 +7,15 @@ import {
     CTX_RPC,
     CTX_TICK,
     CtxType,
-    ExtraArgs,
+    ExtraArgs, INJECTION_MARKER,
     NET_DECL_ARGS,
     PAYLOAD_VALIDATOR,
     PERM_VALIDATOR,
-    PLAYER_VALIDATOR,
-    RAW_CMD_VALIDATOR,
+    PLAYER_VALIDATOR, PROXY_PROPS,
+    RAW_CMD_VALIDATOR, REFLECTOR_DATA,
     SRC_VALIDATOR
 } from "./skeleton/constants";
+import {getMeta} from "./skeleton/meta";
 
 export const chainedSwitch = <T, F extends unknown>(val: T) => createChainedFunction(() => val, {
     "inspect": (cx, val: T, resFactory: (val: T) => F = (v) => v as F) => {
@@ -32,6 +33,20 @@ export const chainedSwitch = <T, F extends unknown>(val: T) => createChainedFunc
         }
     }
 })()
+
+export class ChainedSwitch<T, F extends unknown> {
+    constructor(private readonly val: T) {}
+    private ret_v: any
+    public inspectIf(val: T, cond: (val: T) => boolean, resFactory: (val: T) => F = (v) => v as F) {
+        if (cond(this.val) && this.val == val) {
+            this.ret_v = resFactory(val)
+        }
+        return this
+    }
+    public ok() {
+        return this.ret_v
+    }
+}
 
 /**
  * Function to mock a data type (useful when calling methods with some decorated params)
@@ -108,3 +123,6 @@ export const mergeArrays = <T extends ReadonlyArray<any>, F extends ReadonlyArra
     }
     return merged as Array<T[number] | F[number]>
 }
+
+export const isMarkedForStaticInjection = (target: any, prop: string) => !!getMeta(target, REFLECTOR_DATA, PROXY_PROPS)
+export const isProxyAttached = (target: any, prop: string) => typeof target[prop] === "function" ? target[prop].toString().includes(INJECTION_MARKER) : false

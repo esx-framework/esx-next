@@ -54,10 +54,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@reincarnatedjesus/f-chain@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@reincarnatedjesus/f-chain/-/f-chain-1.1.5.tgz#cb64c43496513c22579fa90430f722591694ad56"
-  integrity sha512-WN9JRgq0b0GKv85siE1HG2ztWn6FyUnIh77PofJ0eM/gBx8ilGtnSEGvjunSdk8xX57M+qY6ed0v+PaZtDnm0g==
+"@reincarnatedjesus/f-chain@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@reincarnatedjesus/f-chain/-/f-chain-1.1.6.tgz#4a71b1545ef04cc28f1fb7075b4895a0524b1888"
+  integrity sha512-3LNxEDrVCdeG4Ssz8HPR6IEEUGfle/0nX4P6Xhuhp989M0M2djoYTBPl0ot/PRbeOTOQXS45pqj0gRkLfkYrIw==
 
 "@ts-morph/common@~0.10.1":
   version "0.10.1"
