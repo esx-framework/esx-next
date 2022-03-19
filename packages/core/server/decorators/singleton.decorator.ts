@@ -38,7 +38,9 @@ export const Inject = (name: string): ParameterDecorator => {
         //ctxProxy(target, propKey)
     }
 }
-
+/**
+ * Essential decorator for every class accessing IoC related functionality (most parameter decorators excluding event, rpc and command related ones since those will automatically be called by the framework)
+ */
 export const Class = (): any => {
     return (target: any) => class extends target {
         private readonly __ESX_ORIGNAME = target.name
