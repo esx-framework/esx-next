@@ -95,7 +95,7 @@ export function ctxProxy(target: any, propKey: string) {
     })
     delete target[propKey]
     target[propKey] = proxy.bind(target)
-    target.test = 10
+    //target.test = 10
     INTERNAL_LOGGER.debug(`Proxy attached to class ${target[ORIG_CLASS_NAME]}, in ${propKey}()`)
 
 
