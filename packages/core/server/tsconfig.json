@@ -18,9 +18,13 @@
     "esModuleInterop": true,
     //"noEmit": true,
     "sourceMap": true,
-    "declaration": true,
-    
+    "declaration": true
+
   },
-  "include": ["./**/*", "../common/**/*"],
-  "exclude": ["**/node_modules"],
+  "include": [
+    "./**/*",
+    "../common/**/*",
+    "../node_modules/@types/jest/index.d.ts"
+  ],
+  "exclude": ["**/node_modules"]
 }

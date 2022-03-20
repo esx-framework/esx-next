@@ -2,7 +2,7 @@ fx_version 'cerulean'
 
 game 'gta5'
 
-name 'your-awesome-project'
+name 'esx-next'
 
 client_script 'dist/client/client.js'
 

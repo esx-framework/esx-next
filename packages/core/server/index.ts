@@ -24,7 +24,7 @@ export interface Config {
 export const ESX = {
     configure: (cnf: Partial<Config>) => setConfig(cnf),
     withSingletons: (singletons: any[]) => singletons.forEach(sing => {
-        const name = sing[ORIG_CLASS_NAME]
+        const name = sing[ORIG_CLASS_NAME] || sing.constructor.name
         registerSingleton(name, sing)
     }),
 }

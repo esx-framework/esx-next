@@ -8,10 +8,12 @@
     "dev": "node build.dev.js",
     "docs:server:start": "fliegdoc serve",
     "docs:server:build": "fliegdoc build",
-    "start:sv": "node dist/server.js"
+    "start:sv": "node dist/server.js",
+    "test": "jest"
   },
   "dependencies": {
     "@reincarnatedjesus/f-chain": "^1.1.7",
+    "output-interceptor": "^4.1.0",
     "reflect-metadata": "^0.1.13",
     "tslog": "^3.3.2",
     "uuidv4": "^6.2.12"
@@ -19,9 +21,22 @@
   "devDependencies": {
     "@citizenfx/client": "^2.0.4793-1",
     "@citizenfx/server": "^2.0.4793-1",
+    "@types/jest": "^27.4.1",
     "@types/node": "^16.3.1",
     "esbuild": "^0.14.27",
     "fliegdoc": "^0.5.1",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.3",
     "typescript": "^4.6.2"
+  },
+  "jest": {
+    "preset": "ts-jest",
+      "testEnvironment": "node",
+      "testMatch": ["**/?(*.)+(spec|test).ts?(x)"],
+      "globals": {
+        "ts-jest": {
+            "tsConfigFile": "server/tsconfig.json"
+        }
+      }
   }
 }

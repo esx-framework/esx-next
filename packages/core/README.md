@@ -7,3 +7,6 @@
 - Player class
 - Reactive state
 - Integration with txAdmin
+- Type based validations based on class-validator and class-transformer
+- Component decorator
+- Event middleware

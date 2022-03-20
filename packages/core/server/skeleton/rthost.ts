@@ -97,7 +97,7 @@ export function ctxProxy(target: any, propKey: string) {
         }
 
         const finalArgs = mergeArrays(args, argMap)
-        originalMethod.apply(target, finalArgs) //re-bind the this
+        return originalMethod.apply(target, finalArgs) //re-bind the this
     })
     delete target[propKey]
     target[propKey] = injectionProxy.bind(target)
