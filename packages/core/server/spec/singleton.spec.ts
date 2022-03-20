@@ -9,6 +9,7 @@ test("tests if a singleton is properly injected", () => {
         }
     }
     ESX.withSingletons([new ToInject()])
+
     @Class()
     class TestClass {
         constructor() {}

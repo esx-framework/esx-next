@@ -126,3 +126,13 @@ export const mergeArrays = <T extends ReadonlyArray<any>, F extends ReadonlyArra
 
 export const isMarkedForStaticInjection = (target: any, prop: string) => !!getMeta(target, REFLECTOR_DATA, PROXY_PROPS)
 export const isProxyAttached = (target: any, prop: string) => typeof target[prop] === "function" ? target[prop].toString().includes(INJECTION_MARKER) : false
+export const getArgTypes = (target: any, prop: string) => Reflect.getMetadata("design:paramtypes", target, prop)
+
+export function isClass(obj: any) {
+    const isCtorClass = obj.constructor && obj.constructor.toString().substring(0, 5) === 'class'
+    if(obj.prototype === undefined) {
+        return isCtorClass
+    }
+    const isPrototypeCtorClass = obj.prototype.constructor && obj.prototype.constructor.toString && obj.prototype.constructor.toString().substring(0, 5) === 'class'
+    return isCtorClass || isPrototypeCtorClass
+}

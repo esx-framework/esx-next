@@ -12,17 +12,22 @@ import {
     SourceValidatorSig,
     SRC_VALIDATOR
 } from "../skeleton/constants";
+import {getArgTypes} from "../utils";
 
 /**
  * Decorator to get/validate the payload of an RPC/Net event
  */
-export const Payload = (validatorFn?: PayloadValidatorSig) => {
+export const Payload = (validatorFn?: PayloadValidatorSig | boolean) => {
     return (target: Object, propKey: string, idx: number) => {
         const map: any[] = getMeta<any[]>(target, propKey, INTERNAL_ARGS) || []
         map[idx] = GET_PAYLOAD_DECL_ARG
         attachMeta(target, propKey, INTERNAL_ARGS, map)
-        if (validatorFn) {
+        if (typeof validatorFn == "function") {
             attachMeta(target, propKey, PAYLOAD_VALIDATOR, validatorFn)
+        } else if (typeof validatorFn !== "boolean") {
+            //automatic validation
+            const dto = (getArgTypes(target, propKey) || [])[idx]
+            attachMeta(target, propKey, PAYLOAD_VALIDATOR, dto)
         }
     }
 }

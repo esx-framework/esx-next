@@ -13,7 +13,7 @@ import {
     createContextDescriptor,
     getArgs,
     getValidatorKey,
-    isArgGetterOfType, isMarkedForStaticInjection, isProxyAttached,
+    isArgGetterOfType, isClass, isMarkedForStaticInjection, isProxyAttached,
     mergeArrays,
     TODO
 } from "../utils";
@@ -24,11 +24,22 @@ import {EventContext} from "../decorators/event.decorator";
 import {getSingletonRef} from "./singletonloader";
 import {INTERNAL_LOGGER} from "../server";
 import {Inject} from "../decorators/singleton.decorator";
+import { transformAndValidate } from "class-transformer-validator";
 
 interface ContextCallResult<T> {
     reachedEnd: boolean,
     reason: FailReasons,
     result: T
+}
+
+export async function validateClass(pload: any, against: any): Promise<{ obj: any, succeeded: boolean, err: any }> {
+    try {
+        const obj = await transformAndValidate(against, pload)
+        return {obj, succeeded: true, err: null}
+    } catch (err) {
+        return {obj: null, succeeded: false, err}
+    }
+
 }
 
 export async function callInCtx<T = never>(target: any, prop: string, cx: CtxDecl, execType: CtxType): Promise<ContextCallResult<T>> {
@@ -43,7 +54,7 @@ export async function callInCtx<T = never>(target: any, prop: string, cx: CtxDec
     const args: any[] = []
     for (const [k, argDecl] of Object.entries(meta)) {
         const validatorArg = getValidatorKey(argDecl)
-        const validatorFn = getMeta<ValidatorSigs>(target, prop, validatorArg) || ((cx: CtxDecl, ...data: unknown[]) => true)
+        const validatorFn: any = getMeta<ValidatorSigs | Object>(target, prop, validatorArg) || ((cx: CtxDecl, ...data: unknown[]) => true)
         const toInspect = new ChainedSwitch(validatorArg)
             .inspectIf("PAYLOAD_VALIDATOR", callContext.hasPayload, () => (<EventContext>cx).getPayload())
             .inspectIf("SRC_VALIDATOR", callContext.hasSource, () => cx.getSource())
@@ -52,12 +63,13 @@ export async function callInCtx<T = never>(target: any, prop: string, cx: CtxDec
             .inspectIf("ARG_VALIDATOR", callContext.hasArgs, () => (<CommandContext>cx).getArgs())
             .inspectIf("RAW_CMD_VALIDATOR", callContext.hasRawCmd, () => (<CommandContext>cx).getRawCmd())
             .ok()
-        const proceed = validatorFn(cx, toInspect)
-        if (!proceed) {
-            INTERNAL_LOGGER.debug(`Validator failed`)
+        const useValidatorFunction = !isClass(validatorFn)
+        const proceed = useValidatorFunction ? validatorFn(cx, toInspect) : (await validateClass(toInspect[0] ?? {}, validatorFn))
+        if (useValidatorFunction ? !proceed : !proceed.succeeded) {
+            INTERNAL_LOGGER.debug(`Validator failed (function: ${useValidatorFunction ? "yes" : "no"}, ${useValidatorFunction ? "" : `validator error was: ${proceed.err}`})`)
             return {reachedEnd: false, reason: VALIDATOR_FAILED, result: undefined}
         }
-        args[(<any>k)] = toInspect
+        args[(<any>k)] = useValidatorFunction ? toInspect : proceed.obj
     }
 
     try {

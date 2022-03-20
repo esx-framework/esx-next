@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@reincarnatedjesus/f-chain": "^1.1.7",
+    "class-transformer-validator": "^0.9.1",
     "output-interceptor": "^4.1.0",
     "reflect-metadata": "^0.1.13",
     "tslog": "^3.3.2",
@@ -23,6 +24,9 @@
     "@citizenfx/server": "^2.0.4793-1",
     "@types/jest": "^27.4.1",
     "@types/node": "^16.3.1",
+    "@types/validator": "^13.7.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
     "esbuild": "^0.14.27",
     "fliegdoc": "^0.5.1",
     "jest": "^27.5.1",
@@ -31,12 +35,14 @@
   },
   "jest": {
     "preset": "ts-jest",
-      "testEnvironment": "node",
-      "testMatch": ["**/?(*.)+(spec|test).ts?(x)"],
-      "globals": {
-        "ts-jest": {
-            "tsConfigFile": "server/tsconfig.json"
-        }
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/?(*.)+(spec|test).ts?(x)"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "server/tsconfig.json"
       }
+    }
   }
 }
