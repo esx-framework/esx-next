@@ -17,4 +17,4 @@ new HandlerClass()
         strField: "hello",
         boolField: true
     })
-})
+})  

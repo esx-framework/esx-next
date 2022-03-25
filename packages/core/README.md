@@ -10,3 +10,4 @@
 - Type based validations based on class-validator and class-transformer
 - Component decorator
 - Event middleware
+- Line class (impl to circles too)
