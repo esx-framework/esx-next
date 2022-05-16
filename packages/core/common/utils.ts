@@ -7,6 +7,7 @@ export function boundary<T>(fn: () => T | undefined, def: T) {
         return def
     }
 }
+//shitty func to get a sum hash of any value
 export function sig(toSer: any) {
     try {
         GetHashKey(toSer)

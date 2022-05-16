@@ -84,4 +84,4 @@ export const VALIDATOR_FAILED = "VALIDATOR_FAILED"
 export const HANDLER_ERROR = "HANDLER_ERROR"
 export const NO_FAIL = "NO_FAIL"
 export type FailReasons = typeof VALIDATOR_FAILED | typeof HANDLER_ERROR | typeof NO_FAIL
-export type Component = "player"
+export type Component = "player" | "PlayerPermissionManager" | "principal"

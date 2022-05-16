@@ -8,16 +8,18 @@ export class Line {
     constructor(private readonly p1C: Vector2, private readonly p2C: Vector2) {}
 
     /**
-     * Checks if a point is on that line
+     * Checks if a point is on the line
      * @param vec
      */
     @Cache()
     public isOn(vec: Vector2) {
         return this.p1C.distanceBetween(vec) + this.p2C.distanceBetween(vec) === this.p1C.distanceBetween(this.p2C)
     }
+
     public get p1() {
         return this.p1C
     }
+
     public get p2() {
         return this.p2C
     }
@@ -55,6 +57,10 @@ export class Line {
         const y = ((this.p1C.y * 2) + this.p2C.y) / 3
         return new Vector2(x, y)
     }
+
+    /**
+     * Returns the trisection point relative to P2
+      */
     @Cache()
     public getTrisectionP2() {
         const x = ((this.p2C.x * 2) + this.p1C.x) / 3

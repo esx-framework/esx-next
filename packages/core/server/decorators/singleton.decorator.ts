@@ -28,7 +28,6 @@ export const Singleton = (): any => {
 export const Inject = (name: string): ParameterDecorator => {
     return (target: any, propKey: string, idx: number) => {
         const type = Reflect.getMetadata("design:paramtypes", target, propKey)
-        console.log("Type was",  type)
         const map: any[] = getMeta<any[]>(target, propKey, INTERNAL_ARGS) || []
         const args = appendArgs(GET_SINGLETON, [name])
         INTERNAL_LOGGER.debug(`Marking ${name} for injection into ${target.constructor.name}.${propKey} and appending: ${args}`)

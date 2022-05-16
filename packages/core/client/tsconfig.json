@@ -12,6 +12,7 @@
     "types": ["@citizenfx/client", "@types/node"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "experimentalDecorators": true,
     "esModuleInterop": true,
     "declaration": true
   },

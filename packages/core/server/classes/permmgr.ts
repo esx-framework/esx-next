@@ -108,7 +108,7 @@ class Principal implements AugmentableComponent {
 }
 
 
-
+@Augmentable("PlayerPermissionManager")
 export class PlayerPermissionManager {
     constructor(private readonly player: Player) {}
 

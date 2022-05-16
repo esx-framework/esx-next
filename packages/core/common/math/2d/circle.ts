@@ -58,5 +58,4 @@ export class Circle {
         return this.getPointPosRel(point) == "outside"
     }
 
-
 }

@@ -5,6 +5,8 @@
 import {PlayerPermissionManager} from "./permmgr";
 import {Identifiers} from "../skeleton/constants";
 import {Augmentable, AugmentableComponent, getComponentInClassCtx} from "../decorators/augments.decorator";
+import {buildObject} from "../skeleton/utils";
+
 
 @Augmentable("player")
 export class Player implements AugmentableComponent {
@@ -60,4 +62,33 @@ export class Player implements AugmentableComponent {
         return as === "string" ? this.src.toString() : this.src
     }
 
+    public useState<T>(key: string, value: T, replicate: boolean = false): [() => T, (val: T) => void] {
+        const {state} = global.Player(this.src)
+        state.set(key, value, replicate)
+        return [() => state[key], (val: T) => state.set(key, val, replicate)]
+    }
+    public useEffect<T>(key: string | string[], handlerFunc: (newVal: T, key: string, isReplicated: boolean) => void) {
+        const keys = Array.isArray(key) ? key : [key]
+        keys.forEach(key => {
+            AddStateBagChangeHandler(key, `player:${this.src}`, (bagName: string, key: string, value: T, _: unknown, repl: boolean) => handlerFunc(value, key, repl))
+        })
+    }
+
+    public getState<T>(key: string): T | null {
+        const {state} = global.Player(this.src)
+        return state[key] as T
+    }
+    public static _identifiersAsObject(player: number) {
+        const idents = new Player(player).idents
+        return buildObject(Array.from(idents.entries()))
+    }
+}
+
+export function usePlayerState<T>(player: Player, key: string, val: T, replicate = false) {
+    return player.useState<T>(key, val, replicate)
+}
+
+
+export function usePlayerEffect<T>(player: Player, key: string | string[], handlerFunc: (newVal: T, key: string, isReplicated: boolean) => void) {
+    return player.useEffect(key, handlerFunc)
 }
