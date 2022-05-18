@@ -11,8 +11,8 @@ class ClassWithMeta {
 
 test("test class metadata registration", (done) => {
     const inst = new ClassWithMeta()
-    const refl = new ClassReflector(inst, "method")
+    const refl = new ClassReflector(inst)
     expect(refl.getMeta("classWideMeta")).toEqual("hello from classwide")
-    expect(refl.getContextMeta("methodMeta")).toEqual("hello from method")
+    expect(refl.getContextMeta("method", "methodMeta")).toEqual("hello from method")
     done()
 })

@@ -17,7 +17,7 @@ import {getArgTypes} from "../utils";
 /**
  * Decorator to get/validate the payload of an RPC/Net event
  */
-export const Payload = (validatorFn?: PayloadValidatorSig | boolean) => {
+export const Payload = (validatorFn?: PayloadValidatorSig | false) => {
     return (target: Object, propKey: string, idx: number) => {
         const map: any[] = getMeta<any[]>(target, propKey, INTERNAL_ARGS) || []
         map[idx] = GET_PAYLOAD_DECL_ARG

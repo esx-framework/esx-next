@@ -24,7 +24,7 @@ export const Meta = (key: string, value: any) => {
 export const Reflector = () => {
 return (target: Object, propKey: string, idx: number) => {
     const map: any[] = getMeta<any[]>(target, propKey, INTERNAL_ARGS) || []
-    map[idx] = new ClassReflector(target, propKey)
+    map[idx] = new ClassReflector(target)
     attachMeta(target, propKey, INTERNAL_ARGS, map)
 }
 }

@@ -87,11 +87,7 @@ export const createContextDescriptor = (typ: CtxType) => ({
 })
 export const metaName = (name: string) => `_META:${name}`
 
-export const generateRpcPair = (name: string, id: string) => ({
-    recv: `ESX:RPC:${name}:RECV`,
-    uuid: id,
-    reply: `ESX:RPC:${name}:REPL:${id}`
-})
+
 
 export const TODO = (text: string) => {
     throw new Error(`TODO: ${text}`)

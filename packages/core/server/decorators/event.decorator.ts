@@ -28,7 +28,7 @@ export const OnNet = (eventName: string) => {
 }
 
 /**
- * Decorator to mark a method as an event listener
+ * Decorator to mark a method as a local event listener
  * @param eventName
  *
  *
@@ -41,3 +41,19 @@ export const On = (eventName: string) => {
     }
 }
 
+/**
+ * Decorator to mark a method as a function (callable from the client, similar to events, except the event name is the method's name) <br>
+ * **RETURN VALUE IS IGNORED**, use RPC-s for passing data.
+ */
+export const Function = () => {
+    return (target: any, memberName: string, propertyDescr: PropertyDescriptor) => {
+        const funcName = `ESX:FN:${memberName}`
+        attachMeta(target, memberName, NET_EVENT_HANDLER_PROP, true)
+        INTERNAL_LOGGER.debug(`Marked method ${memberName} as a net-callable function`)
+        onNet(funcName, async (...payload: any[]) => {
+            const src = global.source
+            const cx: EventContext = createChain(src, payload, "EVENT_NO_ID")
+            await callInCtx(target, memberName, cx, CTX_EVENT)
+        })
+    }
+}

@@ -11,7 +11,7 @@ export function registerSingleton(name: string, ref: any) {
 }
 
 
-export function getSingletonRef<T>(name: string): T {
+export function getSingletonRef<T>(name: string): T | undefined {
     return singletons.get(name)
 }
 

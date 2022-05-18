@@ -42,3 +42,9 @@ const argsCache: Record<string, any> = {}
 //squares a number
 export const sqr = memo((num: number) => num * num)
 export const degToRad = (degs: number) => degs / (Math.PI / 180)
+
+export const generateRpcPair = (name: string, id: string) => ({
+    recv: `ESX:RPC:${name}:RECV`,
+    uuid: id,
+    reply: `ESX:RPC:${name}:REPL:${id}`
+})

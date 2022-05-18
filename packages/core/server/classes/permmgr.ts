@@ -23,7 +23,7 @@ function constructAceCommand(action: "add" | "revoke", principal: Principal, ace
 }
 
 @Augmentable("principal")
-class Principal implements AugmentableComponent {
+export class Principal implements AugmentableComponent {
     public getComponent: getComponentSignature
     private readonly fields: Set<string> = new Set<string>()
     constructor() {}

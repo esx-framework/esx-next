@@ -1,9 +1,8 @@
 import {CTX_RPC, RPC_HANDLER_PROP} from "../skeleton/constants";
 import {attachMeta} from "../skeleton/meta";
-import {Player} from "../classes/player";
 import {createChainedFunction} from "@reincarnatedjesus/f-chain";
 import {callInCtx} from "../skeleton/rthost";
-import {generateRpcPair} from "../utils";
+import {generateRpcPair} from "../../common/utils";
 
 
 type RpcDelegate = {src: number, payload: any, __id: string}
@@ -31,8 +30,6 @@ export const RPC = (name: string) => {
         const {recv} = generateRpcPair(name, "")
         onNet(recv, async ({id, payload}: { payload: any[], id: string }) => {
             const src = source
-            const handler = target[memberName]
-                const ply = new Player(src)
                 const cx: RpcContext = createChain(src, payload, id)
                 const res = await callInCtx<any>(target, memberName, cx, CTX_RPC)
                 if (res.reachedEnd) {
