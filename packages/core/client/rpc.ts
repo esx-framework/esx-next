@@ -1,4 +1,4 @@
-import {uuid} from "uuidv4";
+import {v4} from "uuid";
 import {generateRpcPair} from "../common/utils";
 
 
@@ -10,7 +10,7 @@ import {generateRpcPair} from "../common/utils";
  */
 export async function emitRpc<T, P>(name: string, payload: P, timeout = 1000): Promise<T | null> {
     return new Promise((res) => {
-        const id = uuid()
+        const id = v4()
         const {recv, reply} = generateRpcPair(name, id)
         emitNet(recv, {id, payload})
         const handlerFunc = (resp: T) => {

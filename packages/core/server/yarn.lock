@@ -3338,7 +3338,7 @@ ts-morph@^11.0.0:
     "@ts-morph/common" "~0.10.1"
     code-block-writer "^10.1.1"
 
-tslog@^3.3.2:
+tslog@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/tslog/-/tslog-3.3.3.tgz#751a469e0d36841bd7e03676c27e53e7ffe9bc3d"
   integrity sha512-lGrkndwpAohZ9ntQpT+xtUw5k9YFV1DjsksiWQlBSf82TTqsSAWBARPRD9juI730r8o3Awpkjp2aXy9k+6vr+g==

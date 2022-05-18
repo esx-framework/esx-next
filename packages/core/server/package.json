@@ -8,12 +8,14 @@
     "start:sv": "node dist/server.js",
     "test": "jest"
   },
+  "types": "out/index.d.ts",
+  "main": "out/index.js",
   "dependencies": {
     "@reincarnatedjesus/f-chain": "^1.1.7",
     "class-transformer-validator": "^0.9.1",
     "output-interceptor": "^4.1.0",
     "reflect-metadata": "^0.1.13",
-    "tslog": "^3.3.2",
+    "tslog": "^3.3.3",
     "uuidv4": "^6.2.12"
   },
   "devDependencies": {
