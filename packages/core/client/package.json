@@ -1,18 +1,21 @@
 {
-  "name": "@esx/reporoot",
+  "name": "@esx/client",
   "version": "1.0.0",
   "author": "wowjeeez",
   "license": "MIT",
   "scripts": {
-    "cp": "copyfiles --flat server/dist/server/index.d.ts server/out && copyfiles --flat client/dist/client/index.d.ts client/out",
-    "build": "rimraf **/out &&yarn && cd ./server && npm run build && cd ../client && npm run build && cd .. && node bundle.js && npm run cp && rimraf **/dist",
-    "docs:server:start": "fliegdoc serve",
-    "docs:server:build": "fliegdoc build",
+    "build": "yarn && rimraf dist && tsc --outDir dist && dts-bundle --configJson dts-bundle.json",
     "test": "jest"
   },
+  "dependencies": {
+    "uuidv4": "^6.2.12"
+  },
   "devDependencies": {
-    "copyfiles": "^2.4.1",
+    "@citizenfx/client": "^2.0.4793-1",
+    "@types/jest": "^27.4.1",
+    "dts-bundle": "^0.7.3",
     "jest": "^27.5.1",
+    "rimraf": "^3.0.2",
     "ts-jest": "^27.1.3",
     "typescript": "^4.6.2"
   },

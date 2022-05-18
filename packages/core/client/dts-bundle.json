@@ -1,0 +1,4 @@
+{
+    "name": "index",
+    "main": "dist/client/client.d.ts"
+}

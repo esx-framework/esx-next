@@ -1,20 +1,20 @@
 require('esbuild').build({
-    entryPoints: ['dist/server/server.js'],
+    entryPoints: ['server/dist/server/index.js'],
     bundle: true,
     platform: 'node',
     target: ['node16'],
-    outfile: 'dist/server.js',
+    outfile: 'server/out/index.js',
     sourcemap: "inline",
     keepNames: true,
     minifySyntax: false
 }).catch(err => console.log("build error", err))
 
 require('esbuild').build({
-    entryPoints: ['dist/client/client.js'],
+    entryPoints: ['client/dist/client/client.js'],
     bundle: true,
     platform: 'node',
     target: ['node16'],
-    outfile: 'dist/client.js',
+    outfile: 'client/out/index.js',
     sourcemap: "inline",
     keepNames: true,
     minifySyntax: false
