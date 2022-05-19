@@ -17,7 +17,7 @@
     "bump:minor": "cd client && semver -i minor && cd ../server && semver -i minor && cd ..",
     "bump:major": "cd client && semver -i major && cd ../server && semver -i major && cd ..",
     "bump:patch": "cd client && semver -i patch && cd ../server && semver -i patch && cd ..",
-    "bump:semver": "cd client && semver -i $npm_config_lvl && cd ../server && semver -i $npm_config_lvl && cd ..",
+    "bump:semver": "cd client && semver -i $npm_config_lvl && cd ../server && semver -i $npm_config_lvl && cd .."
   },
   "devDependencies": {
     "copyfiles": "^2.4.1",
