@@ -5,11 +5,3 @@ export {Line} from "./math/2d/line"
 export {Circle} from "./math/2d/circle"
 export {Cache} from "./decorators/cache.decorator"
 export {memo, sig} from "./utils"
-
-
-const isServer = IsDuplicityVersion()
-if (isServer) {
-    //server
-} else {
-    //client
-}
