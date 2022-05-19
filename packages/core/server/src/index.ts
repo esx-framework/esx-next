@@ -1,12 +1,11 @@
 import {setConfig} from "./server";
 
-import {Player} from "./classes/player"
+export {Player as xPlayer} from "./classes/player"
 import {Identifiers, ORIG_CLASS_NAME} from "./skeleton/constants";
 import {getSingletonRef, registerSingleton} from "./skeleton/singletonloader";
 import {TLogLevelName} from "tslog";
 import "reflect-metadata"
 
-export const PlayerManager = Player
 export {IntervalManager} from "./classes/intervalManager"
 export {TickManager} from "./classes/tickManager"
 export {ClassReflector} from "./classes/reflector"
