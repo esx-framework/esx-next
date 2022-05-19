@@ -12,12 +12,18 @@
     "clear": "rimfraf **/dist",
     "docs:server:start": "fliegdoc serve",
     "docs:server:build": "fliegdoc build",
-    "test": "jest"
+    "test": "jest",
+    "publish:both": "cd client && npm publish --access public && cd .. & cd server && npm publish --access public && cd ..",
+    "bump:minor": "cd client && semver -i minor && cd ../server && semver -i minor && cd ..",
+    "bump:major": "cd client && semver -i major && cd ../server && semver -i major && cd ..",
+    "bump:patch": "cd client && semver -i patch && cd ../server && semver -i patch && cd ..",
+    "bump:semver": "cd client && semver -i $npm_config_lvl && cd ../server && semver -i $npm_config_lvl && cd ..",
   },
   "devDependencies": {
     "copyfiles": "^2.4.1",
     "jest": "^27.5.1",
     "rimraf": "^3.0.2",
+    "semver": "^7.3.7",
     "ts-jest": "^27.1.3",
     "typescript": "^4.6.2"
   },
