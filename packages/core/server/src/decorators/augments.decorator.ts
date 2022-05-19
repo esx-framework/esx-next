@@ -13,9 +13,16 @@ export const Augments = (component: Component | string) => {
     return (target: Function) => {
         INTERNAL_LOGGER.debug(`Registering augmenter ${target.name} for component ${component}`)
         const augs = augmenters.get(component) || []
-        augs.push(target)
+        augs.push([Object.getPrototypeOf(target).constructor, target.name])
         augmenters.set(component, augs)
     }
+}
+
+export function registerAugmenterFor(comp: Component | string, augmenter: any, customName?: string) {
+    INTERNAL_LOGGER.debug(`Registering augmenter ${augmenter.constructor.name} for component ${comp}`)
+        const augs = augmenters.get(comp) || []
+        augs.push([augmenter, customName || augmenter.constructor.name])
+        augmenters.set(comp, augs)
 }
 
 
@@ -35,12 +42,12 @@ export const Augmentable = (refName: Component | string, implementGetter = true)
     return (target: any) => class extends target {
             constructor(...args: any[]) {
                 super(...args);
-                const augs = (augmenters.get(refName) || []).map(aug => {
+                const augs = (augmenters.get(refName) || []).map(([aug, name]) => {
                     try {
                         const ag = new aug(this)
-                        return {inst: ag, name: aug.name}
+                        return {inst: ag, name: name}
                     } catch (err) {
-                        throw new Error(`Failed to attach augmenting class ${aug.name} to ${target.name} due to ${err} in ${aug.name}`)
+                        throw new Error(`Failed to attach augmenting class ${name} to ${target.name} due to ${err} in ${aug.name}`)
                     }
                 })
                 INTERNAL_LOGGER.debug(`Registered all augmenters for ${target.name}`, augs.map(val => val.name))

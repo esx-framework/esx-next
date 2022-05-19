@@ -14,7 +14,7 @@ export {Logger} from "./classes/logger"
 export * from "./decorators/index"
 export * from "../../common/common"
 export {Testing} from "./testing/manager"
-export {AugmentableComponent} from "./decorators/augments.decorator"
+export {AugmentableComponent, registerAugmenterFor} from "./decorators/augments.decorator"
 export interface Config {
     /**
      * The identifier type to be used when doing anything related to user identity (defaults to license)
