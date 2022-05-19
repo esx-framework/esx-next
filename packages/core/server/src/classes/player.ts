@@ -4,7 +4,7 @@
  */
 import {PlayerPermissionManager} from "./permmgr";
 import {Identifiers} from "../skeleton/constants";
-import {Augmentable, AugmentableComponent, getComponentInClassCtx} from "../decorators/augments.decorator";
+import {Augmentable, AugmentableComponent} from "../decorators/augments.decorator";
 import {buildObject} from "../skeleton/utils";
 
 

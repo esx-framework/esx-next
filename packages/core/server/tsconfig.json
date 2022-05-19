@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
       "*": ["types/*"]
     },
@@ -22,7 +22,7 @@
 
   },
   "include": [
-    "./**/*",
+    "./src/**/*",
     "../common/**/*",
     "../node_modules/@types/jest/index.d.ts"
   ],

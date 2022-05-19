@@ -1,4 +1,0 @@
-**/*.ts
-!out/index.d.ts
-dts-bundle.json
-tsconfig.json

@@ -7,8 +7,9 @@
     "build:sv": "echo Building server && cd server && npm run build",
     "build:cl": "echo Building client && cd client && npm run build",
     "build:async": "npm run build:cl & npm run build:sv",
-    "cp": "copyfiles --flat server/dist/server/index.d.ts server/out && copyfiles --flat client/dist/client/index.d.ts client/out",
-    "build": "yarn && rimraf **/node_modules && yarn && rimraf **/out && cd ./common && yarn && cd .. && yarn && npm run build:async && node bundle.js && npm run cp && rimraf **/dist",
+    "cp": "copyfiles server/dist/**/*.d.ts server/out && copyfiles client/dist/**/*.d.ts client/out",
+    "build": "yarn && rimraf **/node_modules && yarn && rimraf **/out && cd ./common && yarn && cd .. && yarn && npm run build:async && node bundle.js && npm run cp",
+    "clear": "rimfraf **/dist",
     "docs:server:start": "fliegdoc serve",
     "docs:server:build": "fliegdoc build",
     "test": "jest"

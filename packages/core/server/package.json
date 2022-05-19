@@ -1,14 +1,15 @@
 {
-  "name": "@esx/server",
-  "version": "1.0.0",
+  "name": "@esx-next/server",
+  "version": "1.0.3",
   "author": "wowjeeez",
   "license": "MIT",
   "scripts": {
-    "build": "yarn && rimraf dist && tsc --outDir dist && dts-bundle --configJson dts-bundle.json",
+    "build": "yarn && rimraf dist && tsc --outDir dist",
     "start:sv": "node dist/server.js",
     "test": "jest"
   },
-  "types": "out/index.d.ts",
+  "files": ["out"],
+  "types": "out/server/dist/server/src/index.d.ts",
   "main": "out/index.js",
   "dependencies": {
     "@reincarnatedjesus/f-chain": "^1.1.7",
@@ -26,7 +27,6 @@
     "@types/validator": "^13.7.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
-    "dts-bundle": "^0.7.3",
     "esbuild": "^0.14.27",
     "fliegdoc": "^0.5.1",
     "jest": "^27.5.1",

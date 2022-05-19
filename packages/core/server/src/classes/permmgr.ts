@@ -4,7 +4,6 @@ import {getConfigField} from "../server";
 import {Augmentable} from "../decorators/augments.decorator";
 
 import {AugmentableComponent, getComponentSignature} from "../decorators/augments.decorator";
-import {getComponentInClassCtx} from "../decorators/augments.decorator";
 
 function constructPrincipalCommand(action: "add" | "revoke", child: Principal, parent: Principal, execute = true) {
     const str = `${action === "add" ? "add_principal" : "remove_principal"} ${child.toString()} ${parent.toString()}`

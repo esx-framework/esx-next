@@ -1,5 +1,5 @@
 import {v4} from "uuid";
-import {generateRpcPair} from "../common/utils";
+import {generateRpcPair} from "../../common/utils";
 
 
 /**

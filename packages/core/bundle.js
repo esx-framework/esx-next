@@ -1,5 +1,5 @@
 require('esbuild').build({
-    entryPoints: ['server/dist/server/index.js'],
+    entryPoints: ['server/dist/server/src/index.js'],
     bundle: true,
     platform: 'node',
     target: ['node16'],
@@ -10,7 +10,7 @@ require('esbuild').build({
 }).catch(err => console.log("build error", err))
 
 require('esbuild').build({
-    entryPoints: ['client/dist/client/client.js'],
+    entryPoints: ['client/dist/client/src/client.js'],
     bundle: true,
     platform: 'node',
     target: ['node16'],

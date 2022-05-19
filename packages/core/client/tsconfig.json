@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
       "*": ["types/*"]
     },
@@ -16,6 +16,6 @@
     "esModuleInterop": true,
     "declaration": true
   },
-  "include": ["./**/*", "../common/**/*"],
+  "include": ["./src/**/*", "../common/**/*"],
   "exclude": ["**/node_modules", "**/spec/**"]
 }

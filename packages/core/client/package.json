@@ -1,22 +1,22 @@
 {
-  "name": "@esx/client",
-  "version": "1.0.0",
+  "name": "@esx-next/client",
+  "version": "1.0.3",
   "author": "wowjeeez",
   "license": "MIT",
   "scripts": {
-    "build": "yarn && rimraf dist && tsc --outDir dist && dts-bundle --configJson dts-bundle.json",
+    "build": "yarn && rimraf dist && tsc --outDir dist",
     "test": "jest"
   },
   "dependencies": {
     "uuid": "^8.3.2"
   },
-  "types": "out/index.d.ts",
+  "types": "out/client/dist/client/src/index.d.ts",
   "main": "out/index.js",
+  "files": ["out"],
   "devDependencies": {
     "@citizenfx/client": "^2.0.4793-1",
     "@types/jest": "^27.4.1",
     "@types/uuid": "^8.3.4",
-    "dts-bundle": "^0.7.3",
     "jest": "^27.5.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.1.3",
