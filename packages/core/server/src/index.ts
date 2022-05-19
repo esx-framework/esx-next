@@ -34,6 +34,6 @@ export const ESX = {
         const name = sing[ORIG_CLASS_NAME] || sing.constructor.name
         registerSingleton(name, sing)
     }),
-    addSingleton: (singleton: any) => registerSingleton(singleton[ORIG_CLASS_NAME] || singleton.constructor.name, singleton),
+    addSingleton: (singleton: any, custName?: string) => registerSingleton(custName || singleton[ORIG_CLASS_NAME] || singleton.constructor.name, singleton),
     getSingletonRef: <T>(name: string) => getSingletonRef<T>(name)
 }
