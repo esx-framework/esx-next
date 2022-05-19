@@ -1,13 +1,5 @@
-# TODO!
-- Perm system (builtin ACE) (decorator too)
-- RPC system
-- Validators
-- Singleton module handler
-- Logger
-- Player class
-- Reactive state
-- Integration with txAdmin
-- Type based validations based on class-validator and class-transformer
-- Component decorator
-- Event middleware
-- Line class (impl to circles too)
+# Directory layout
+`client/src`: Client source
+`server/src`: Server source
+`server/out`: Server distro
+`client/out`: Client distro
