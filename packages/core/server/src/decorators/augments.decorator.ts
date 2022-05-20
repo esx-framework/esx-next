@@ -19,7 +19,7 @@ export const Augments = (component: Component | string) => {
 }
 
 export function registerAugmenterFor(comp: Component | string, augmenter: any, customName?: string) {
-    INTERNAL_LOGGER.debug(`Registering augmenter ${augmenter.constructor.name} for component ${comp}`)
+    INTERNAL_LOGGER.debug(`Registering augmenter ${customName || augmenter.constructor.name} for component ${comp}`)
         const augs = augmenters.get(comp) || []
         augs.push([augmenter, customName || augmenter.constructor.name])
         augmenters.set(comp, augs)
@@ -45,9 +45,10 @@ export const Augmentable = (refName: Component | string, implementGetter = true)
                 const augs = (augmenters.get(refName) || []).map(([aug, name]) => {
                     try {
                         const ag = new aug(this)
+                        INTERNAL_LOGGER.debug(`Injecting ${name} into ${target.name} as augmentable`)
                         return {inst: ag, name: name}
                     } catch (err) {
-                        throw new Error(`Failed to attach augmenting class ${name} to ${target.name} due to ${err} in ${aug.name}`)
+                        INTERNAL_LOGGER.error(`Failed to attach augmenting class ${name} to ${target.name} due to ${err} in ${aug.name}`, err)
                     }
                 })
                 INTERNAL_LOGGER.debug(`Registered all augmenters for ${target.name}`, augs.map(val => val.name))
@@ -84,7 +85,6 @@ export interface AugmentableComponent {
 export type getComponentSignature = <C>(name: string) => C
 
 export function getComponentInClassCtx<T>(target: any, name: string): T {
-    INTERNAL_LOGGER.debug(`Getting augmenter component ${name}`)
     const comps = getMeta<any[]>(target, AUGMENT_KEY, AUGMENT_MAP)
     return comps.find(cmp => cmp.name === name)?.inst
 }

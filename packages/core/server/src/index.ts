@@ -2,7 +2,7 @@ import {setConfig} from "./server";
 
 export {Player as xPlayer} from "./classes/player"
 import {Identifiers, ORIG_CLASS_NAME} from "./skeleton/constants";
-import {getSingletonRef, registerSingleton} from "./skeleton/singletonloader";
+import {getSingletonRef, registerSingleton, getRegisteredSingletons} from "./skeleton/singletonloader";
 import {TLogLevelName} from "tslog";
 import "reflect-metadata"
 
@@ -15,6 +15,7 @@ export * from "./decorators/index"
 export * from "../../common/common"
 export {Testing} from "./testing/manager"
 export {AugmentableComponent, registerAugmenterFor} from "./decorators/augments.decorator"
+
 export interface Config {
     /**
      * The identifier type to be used when doing anything related to user identity (defaults to license)
@@ -34,5 +35,6 @@ export const ESX = {
         registerSingleton(name, sing)
     }),
     addSingleton: (singleton: any, custName?: string) => registerSingleton(custName || singleton[ORIG_CLASS_NAME] || singleton.constructor.name, singleton),
-    getSingletonRef: <T>(name: string) => getSingletonRef<T>(name)
+    getSingletonRef: <T>(name: string) => getSingletonRef<T>(name),
+    getSingletons: getRegisteredSingletons
 }

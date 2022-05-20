@@ -6,10 +6,13 @@ const singletons = new Map<string, any>()
 
 
 export function registerSingleton(name: string, ref: any) {
-    singletons.set(name, ref)
+    singletons.set(name, new ref())
     INTERNAL_LOGGER.debug(`Registered new singleton: ${name}`)
 }
 
+export function getRegisteredSingletons() {
+    return Array.from(singletons.entries())
+}
 
 export function getSingletonRef<T>(name: string): T | undefined {
     return singletons.get(name)

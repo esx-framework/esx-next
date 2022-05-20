@@ -7,13 +7,17 @@ import "reflect-metadata"
 Testing.stub()
 Testing.defStub("GetNumPlayerIdentifiers", () => 0)
 let config: Partial<Config> = {};
-export const INTERNAL_LOGGER = new Logger("ESX::CORE", getConfigField("minLogLevel"))
+export const INTERNAL_LOGGER = new Logger("ESX::CORE", getConfigField("minLogLevel"), true)
 
+const changeListeners: Function[] = []
+
+export const onConfigChange = (fun: Function) => changeListeners.push(fun)
 
 
 
 export function setConfig(cf: Partial<Config>) {
-    config = cf
+        INTERNAL_LOGGER.setLevel(getConfigField("minLogLevel"))
+        config = cf
 }
 
 

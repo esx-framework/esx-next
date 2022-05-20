@@ -1,5 +1,5 @@
-import {Augmentable, Augments, ComponentAugmenter} from "../decorators";
-import {AugmentableComponent} from "../decorators/augments.decorator";
+import {Augmentable} from "../decorators";
+import {AugmentableComponent, registerAugmenterFor} from "../decorators/augments.decorator";
 
 
 @Augmentable("AugmentableClass")
@@ -11,7 +11,7 @@ class AugmentableClass implements AugmentableComponent {
     }
 }
 
-@Augments("AugmentableClass")
+
 class AugmentingClass  {
     constructor(private readonly parent: AugmentableClass) {
 
@@ -22,6 +22,7 @@ class AugmentingClass  {
 
 }
 test("tests if class augmentation works", (done) => {
+    registerAugmenterFor("AugmentableClass", AugmentingClass, "AugmentingClass")
     const inst = new AugmentableClass()
     const compRes = inst.getComponent<AugmentingClass>("AugmentingClass").callMethodOnOriginal()
     const mRes = inst.method()
